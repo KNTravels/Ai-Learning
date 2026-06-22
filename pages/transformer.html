@@ -1,191 +1,16 @@
-#!/usr/bin/env node
-
-const fs = require('fs');
-const path = require('path');
-
-// Load topics data
-const topicsData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'topics.json'), 'utf8'));
-
-fs.mkdirSync(path.join(__dirname, 'pages'), { recursive: true });
-
-const templateTopics = {
-  'orchestration': 'AI Orchestration',
-  'agent': 'AI Agent',
-  'agent-swarm': 'Agent Swarm',
-  'ai-automation': 'AI Automation',
-  'playwright': 'Playwright',
-  'rag': 'RAG',
-  'mcp': 'MCP',
-  'mcp-servers': 'MCP Servers',
-  'gan': 'GAN',
-  'generative-ai': 'Generative AI',
-  'vae': 'Variational Autoencoder',
-  'fine-tuning': 'Fine Tuning',
-  'reinforcement-learning': 'Reinforcement Learning',
-  'supervised-learning': 'Supervised Learning',
-  'unsupervised-learning': 'Unsupervised Learning',
-  'diffusion-model': 'Diffusion Model',
-  'transformer': 'Transformer',
-  'nlp': 'NLP',
-  'neural-network': 'Neural Network',
-  'context-window': 'Context Window',
-  'slm': 'SLM',
-  'ethical-ai': 'Ethical AI',
-  'langchain': 'LangChain',
-  'langgraph': 'LangGraph',
-  'crewai': 'CrewAI',
-  'autogen': 'AutoGen',
-  'semantic-kernel': 'Semantic Kernel',
-  'llamaindex': 'LlamaIndex',
-  'haystack': 'Haystack',
-  'dspy': 'DSPy',
-  'pydantic-ai': 'PydanticAI',
-  'openai-agents-sdk': 'OpenAI Agents SDK',
-  'dify': 'Dify',
-  'flowise': 'Flowise'
-};
-
-// Generate topic-specific Mermaid diagrams
-function generateTopicDiagrams(topic) {
-  const topicId = topic.id;
-  
-  // Generic flow diagram for all topics
-  const flowDiagram = `
-    <div class="diagram-section">
-      <h4>Process Flow</h4>
-      <div class="mermaid">
-graph LR
-    A["Input/Data"] --> B["Processing<br/>${topic.name}"]
-    B --> C["Output/Result"]
-    B --> D["Optimization"]
-    D --> B
-    style B fill:#4a9eff,stroke:#0066cc,color:#fff
-      </div>
-    </div>
-  `;
-
-  // Topic-specific architecture diagrams
-  let architectureDiagram = '';
-  
-  if (topicId.includes('agent')) {
-    architectureDiagram = `
-    <div class="diagram-section">
-      <h4>Agent Architecture</h4>
-      <div class="mermaid">
-graph TB
-    LLM["Language Model"] --> Plan["Planning Module"]
-    Plan --> Tools["Tool Interface"]
-    Tools --> Exec["Execution Engine"]
-    Exec --> Mem["Memory Management"]
-    Mem --> LLM
-    style LLM fill:#4a9eff,stroke:#0066cc,color:#fff
-      </div>
-    </div>
-    `;
-  } else if (topicId.includes('rag')) {
-    architectureDiagram = `
-    <div class="diagram-section">
-      <h4>RAG System Architecture</h4>
-      <div class="mermaid">
-graph LR
-    Query["User Query"] --> Retrieve["Retriever<br/>Vector Search"]
-    Retrieve --> VectorDB["Vector Database"]
-    VectorDB --> Retrieved["Retrieved Docs"]
-    Retrieved --> LLM["Language Model"]
-    LLM --> Answer["Generated Answer"]
-    style LLM fill:#4a9eff,stroke:#0066cc,color:#fff
-    style VectorDB fill:#f0f4f8,stroke:#999,color:#000
-      </div>
-    </div>
-    `;
-  } else if (topicId.includes('transformer')) {
-    architectureDiagram = `
-    <div class="diagram-section">
-      <h4>Transformer Architecture</h4>
-      <div class="mermaid">
-graph TB
-    Input["Input Sequence"] --> Embed["Embedding Layer"]
-    Embed --> PE["Positional Encoding"]
-    PE --> MultiHead["Multi-Head Attention"]
-    MultiHead --> FF["Feed Forward Network"]
-    FF --> Stack["Stack Multiple Layers"]
-    Stack --> Output["Output Sequence"]
-    style MultiHead fill:#4a9eff,stroke:#0066cc,color:#fff
-      </div>
-    </div>
-    `;
-  } else if (topicId.includes('diffusion')) {
-    architectureDiagram = `
-    <div class="diagram-section">
-      <h4>Diffusion Model Process</h4>
-      <div class="mermaid">
-graph LR
-    Clean["Clean Image"] -->|Add Noise| Noisy1["Partially Noisy"]
-    Noisy1 -->|Add Noise| Noisy2["More Noisy"]
-    Noisy2 -->|Add Noise| Pure["Pure Noise"]
-    Pure -->|Reverse Process| Noisy2
-    Noisy2 -->|Denoise| Noisy1
-    Noisy1 -->|Denoise| Clean
-    style Pure fill:#ff6b6b,stroke:#cc0000,color:#fff
-      </div>
-    </div>
-    `;
-  } else {
-    architectureDiagram = `
-    <div class="diagram-section">
-      <h4>System Architecture</h4>
-      <div class="mermaid">
-graph TB
-    Input["Input"] --> Process["${topic.name}<br/>Processing"]
-    Process --> Output["Output"]
-    Process --> Monitor["Monitoring"]
-    Monitor --> Process
-    style Process fill:#4a9eff,stroke:#0066cc,color:#fff
-      </div>
-    </div>
-    `;
-  }
-
-  // Execution sequence diagram
-  const executionDiagram = `
-    <div class="diagram-section">
-      <h4>Execution Sequence</h4>
-      <div class="mermaid">
-sequenceDiagram
-    participant User
-    participant System as ${topic.name}
-    participant Cache as Memory
-    
-    User->>System: Request
-    System->>Cache: Check Memory
-    alt Cache Hit
-        Cache-->>System: Return Cached
-    else Cache Miss
-        System->>System: Process
-        System->>Cache: Store Result
-    end
-    System-->>User: Response
-      </div>
-    </div>
-    `;
-
-  return flowDiagram + architectureDiagram + executionDiagram;
-}
-
-function generateTopicHTML(topic) {
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="${topic.name} - Comprehensive guide. Learn from beginner to advanced levels with industry examples and interview questions.">
-  <meta name="keywords" content="${topic.name}, ${topic.tags.join(', ')}, AI, Machine Learning">
+  <meta name="description" content="Transformer - Comprehensive guide. Learn from beginner to advanced levels with industry examples and interview questions.">
+  <meta name="keywords" content="Transformer, Architecture, Attention, NLP, Deep Learning, AI, Machine Learning">
   <meta name="robots" content="index, follow">
-  <meta property="og:title" content="${topic.name} - AI Knowledge Hub">
-  <meta property="og:description" content="Master ${topic.name} from beginner to advanced levels">
+  <meta property="og:title" content="Transformer - AI Knowledge Hub">
+  <meta property="og:description" content="Master Transformer from beginner to advanced levels">
   
-  <title>${topic.name} - AI Knowledge Hub</title>
-  <link rel="canonical" href="https://ai-knowledge-hub.com/pages/${topic.id}.html">
+  <title>Transformer - AI Knowledge Hub</title>
+  <link rel="canonical" href="https://ai-knowledge-hub.com/pages/transformer.html">
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
   <script>
@@ -229,15 +54,15 @@ function generateTopicHTML(topic) {
       <div class="breadcrumb">
         <a href="/">Home</a>
         <span>/</span>
-        <a href="/#${topic.category.replace(/\\s+/g, '-').toLowerCase()}">${topic.category}</a>
+        <a href="/#architecture">Architecture</a>
         <span>/</span>
-        <span>${topic.name}</span>
+        <span>Transformer</span>
       </div>
 
       <section class="topic-header">
-        <h1>${topic.name}</h1>
+        <h1>Transformer</h1>
         <div class="topic-header-meta">
-          <span class="topic-header-badge">${topic.category}</span>
+          <span class="topic-header-badge">Architecture</span>
           <span class="topic-header-badge">🌱 Beginner to Advanced</span>
           <span class="topic-header-badge">Last Updated: 2024</span>
         </div>
@@ -247,18 +72,18 @@ function generateTopicHTML(topic) {
         <h2>Overview</h2>
         
         <h3>Less than 5 Years Experience</h3>
-        <p>${topic.summary.less_than_5}</p>
+        <p>Transformer is the foundation of modern AI. Uses attention mechanism to process sequences in parallel. Replaced RNNs for most NLP tasks. Architecture: encoder-decoder.</p>
         
         <h3>5-15 Years Experience</h3>
-        <p>${topic.summary['5_to_15']}</p>
+        <p>Key components: multi-head attention, feed-forward networks, positional encoding. Variants: BERT (encoder), GPT (decoder), T5 (encoder-decoder).</p>
 
         <h3>15+ Years Experience</h3>
-        <p>${topic.summary['15_plus']}</p>
+        <p>Advanced transformers: sparse attention, linear transformers, efficient attention mechanisms. Includes rotary embeddings, alibi positioning, and mixture-of-experts layers.</p>
 
         <h3>Quick Facts</h3>
         <ul>
-          <li><strong>Category:</strong> ${topic.category}</li>
-          <li><strong>Key Tags:</strong> ${topic.tags.slice(0, 5).join(', ')}</li>
+          <li><strong>Category:</strong> Architecture</li>
+          <li><strong>Key Tags:</strong> Architecture, Attention, NLP, Deep Learning</li>
           <li><strong>Experience Levels:</strong> All Levels</li>
           <li><strong>Real-world Use:</strong> Widely used across industries</li>
         </ul>
@@ -267,10 +92,56 @@ function generateTopicHTML(topic) {
       <section id="architecture" class="content-section">
         <h2>Architecture & Technical Details</h2>
         
-        ${generateTopicDiagrams(topic)}
+        
+    <div class="diagram-section">
+      <h4>Process Flow</h4>
+      <div class="mermaid">
+graph LR
+    A["Input/Data"] --> B["Processing<br/>Transformer"]
+    B --> C["Output/Result"]
+    B --> D["Optimization"]
+    D --> B
+    style B fill:#4a9eff,stroke:#0066cc,color:#fff
+      </div>
+    </div>
+  
+    <div class="diagram-section">
+      <h4>Transformer Architecture</h4>
+      <div class="mermaid">
+graph TB
+    Input["Input Sequence"] --> Embed["Embedding Layer"]
+    Embed --> PE["Positional Encoding"]
+    PE --> MultiHead["Multi-Head Attention"]
+    MultiHead --> FF["Feed Forward Network"]
+    FF --> Stack["Stack Multiple Layers"]
+    Stack --> Output["Output Sequence"]
+    style MultiHead fill:#4a9eff,stroke:#0066cc,color:#fff
+      </div>
+    </div>
+    
+    <div class="diagram-section">
+      <h4>Execution Sequence</h4>
+      <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant System as Transformer
+    participant Cache as Memory
+    
+    User->>System: Request
+    System->>Cache: Check Memory
+    alt Cache Hit
+        Cache-->>System: Return Cached
+    else Cache Miss
+        System->>System: Process
+        System->>Cache: Store Result
+    end
+    System-->>User: Response
+      </div>
+    </div>
+    
         
         <h3>Core Components</h3>
-        <p>${topic.name} is built on several key architectural principles and design patterns that enable its functionality and effectiveness.</p>
+        <p>Transformer is built on several key architectural principles and design patterns that enable its functionality and effectiveness.</p>
 
         <h3>Key Design Patterns</h3>
         <ul>
@@ -282,7 +153,7 @@ function generateTopicHTML(topic) {
         </ul>
 
         <h3>Technical Implementation</h3>
-        <p>Implementation of ${topic.name} requires careful consideration of:</p>
+        <p>Implementation of Transformer requires careful consideration of:</p>
         <ul>
           <li>Performance optimization techniques</li>
           <li>Memory management strategies</li>
@@ -296,7 +167,7 @@ function generateTopicHTML(topic) {
         <h2>Real-world Examples & Case Studies</h2>
         
         <h3>Enterprise Applications</h3>
-        <p>${topic.name} is deployed successfully in various enterprise settings:</p>
+        <p>Transformer is deployed successfully in various enterprise settings:</p>
         <ul>
           <li>Large-scale production systems</li>
           <li>Mission-critical applications</li>
@@ -305,7 +176,7 @@ function generateTopicHTML(topic) {
         </ul>
 
         <h3>Research & Innovation</h3>
-        <p>Ongoing research continues to advance ${topic.name}:</p>
+        <p>Ongoing research continues to advance Transformer:</p>
         <ul>
           <li>Academic institutions</li>
           <li>Research laboratories</li>
@@ -371,27 +242,27 @@ function generateTopicHTML(topic) {
         <h3>Conceptual Questions</h3>
         <ol>
           <li>
-            <strong>What is ${topic.name} and what are its primary purposes?</strong>
-            <p><em>Answer:</em> ${topic.summary.intermediate}</p>
+            <strong>What is Transformer and what are its primary purposes?</strong>
+            <p><em>Answer:</em> undefined</p>
           </li>
           <li>
-            <strong>How does ${topic.name} compare to traditional approaches?</strong>
-            <p><em>Answer:</em> ${topic.name} offers modern capabilities with improved efficiency, scalability, and flexibility compared to legacy systems.</p>
+            <strong>How does Transformer compare to traditional approaches?</strong>
+            <p><em>Answer:</em> Transformer offers modern capabilities with improved efficiency, scalability, and flexibility compared to legacy systems.</p>
           </li>
           <li>
-            <strong>What are the main components of ${topic.name}?</strong>
+            <strong>What are the main components of Transformer?</strong>
             <p><em>Answer:</em> The system consists of interconnected modules including input processing, core logic, state management, and output generation.</p>
           </li>
           <li>
-            <strong>When should you use ${topic.name}?</strong>
-            <p><em>Answer:</em> ${topic.name} is ideal for scenarios requiring ${topic.tags[0]} and ${topic.tags[1]}.</p>
+            <strong>When should you use Transformer?</strong>
+            <p><em>Answer:</em> Transformer is ideal for scenarios requiring Architecture and Attention.</p>
           </li>
         </ol>
 
         <h3>Technical Deep-dives</h3>
         <ol>
           <li>
-            <strong>How would you implement ${topic.name} in production?</strong>
+            <strong>How would you implement Transformer in production?</strong>
             <p><em>Answer:</em> Production implementation requires careful architecture, comprehensive testing, monitoring, and operational procedures.</p>
           </li>
           <li>
@@ -399,7 +270,7 @@ function generateTopicHTML(topic) {
             <p><em>Answer:</em> Common issues include improper configuration, inadequate testing, insufficient monitoring, and lack of proper documentation.</p>
           </li>
           <li>
-            <strong>How do you optimize performance of ${topic.name}?</strong>
+            <strong>How do you optimize performance of Transformer?</strong>
             <p><em>Answer:</em> Optimization involves profiling, caching strategies, algorithm improvements, and resource allocation tuning.</p>
           </li>
           <li>
@@ -411,7 +282,7 @@ function generateTopicHTML(topic) {
         <h3>Behavioral & Best Practices</h3>
         <ol>
           <li>
-            <strong>How do you stay updated with ${topic.name} developments?</strong>
+            <strong>How do you stay updated with Transformer developments?</strong>
             <p><em>Answer:</em> Through documentation, community forums, conferences, research papers, and practical experimentation.</p>
           </li>
           <li>
@@ -462,12 +333,7 @@ function generateTopicHTML(topic) {
         
         <h3>Official Documentation</h3>
         <ul>
-          ${topic.references.slice(0, 3).map(ref => {
-            if (typeof ref === 'object' && ref.url) {
-              return '<li><a href="' + ref.url + '" target="_blank" rel="noopener noreferrer">' + ref.title + ' ↗️</a></li>';
-            }
-            return '<li>' + ref + '</li>';
-          }).join('')}
+          <li><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer">Attention Is All You Need ↗️</a></li><li><a href="https://jalammar.github.io/illustrated-transformer/" target="_blank" rel="noopener noreferrer">The Transformer Architecture Explained ↗️</a></li>
         </ul>
 
         <h3>Further Reading</h3>
@@ -531,24 +397,4 @@ function generateTopicHTML(topic) {
 
   <script src="/js/main.js"></script>
 </body>
-</html>`;
-}
-
-// Generate pages for all remaining topics
-const topics = topicsData.topics;
-let generatedCount = 0;
-let skippedCount = 0;
-
-topics.forEach(topic => {
-  const filePath = path.join(__dirname, 'pages', `${topic.id}.html`);
-
-  const html = generateTopicHTML(topic);
-  fs.writeFileSync(filePath, html, 'utf8');
-  generatedCount++;
-  console.log(`✅ Generated: ${filePath}`);
-});
-
-console.log(`\\n📊 Summary:`);
-console.log(`✅ Generated: ${generatedCount} pages`);
-console.log(`⏭️  Skipped: ${skippedCount} pages (already exist)`);
-console.log(`📁 Total pages: ${topics.length}`);
+</html>
