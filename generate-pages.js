@@ -186,7 +186,7 @@ function generateTopicHTML(topic) {
   
   <title>${topic.name} - AI Knowledge Hub</title>
   <link rel="canonical" href="https://ai-knowledge-hub.com/pages/${topic.id}.html">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
   <script>
     mermaid.initialize({ startOnLoad: true, theme: 'default' });
@@ -195,7 +195,7 @@ function generateTopicHTML(topic) {
 <body>
   <nav class="navbar">
     <div class="navbar-container">
-      <a href="/" class="navbar-brand">
+      <a href="../" class="navbar-brand">
         <span class="navbar-brand-icon">🧠</span>
         AI Knowledge Hub
       </a>
@@ -210,7 +210,7 @@ function generateTopicHTML(topic) {
     <button id="sidebar-close" class="sidebar-close">✕</button>
     <div class="sidebar-section">
       <div class="sidebar-title">Navigation</div>
-      <a href="/" class="sidebar-link">← Back to Home</a>
+      <a href="../" class="sidebar-link">← Back to Home</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">On This Page</div>
@@ -227,9 +227,9 @@ function generateTopicHTML(topic) {
   <main class="main-container">
     <div class="container">
       <div class="breadcrumb">
-        <a href="/">Home</a>
+        <a href="../">Home</a>
         <span>/</span>
-        <a href="/#${topic.category.replace(/\\s+/g, '-').toLowerCase()}">${topic.category}</a>
+        <a href="../#${topic.category.replace(/\\s+/g, '-').toLowerCase()}">${topic.category}</a>
         <span>/</span>
         <span>${topic.name}</span>
       </div>
@@ -494,8 +494,8 @@ function generateTopicHTML(topic) {
         <h2>Related Topics</h2>
         <p>Explore related concepts and complementary technologies:</p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
-          <a href="/" class="btn btn-primary">← Back to Home</a>
-          <a href="/" class="btn btn-primary">Explore All Topics →</a>
+          <a href="../" class="btn btn-primary">← Back to Home</a>
+          <a href="../" class="btn btn-primary">Explore All Topics →</a>
         </div>
       </section>
     </div>
@@ -510,17 +510,17 @@ function generateTopicHTML(topic) {
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/sitemap.xml">Sitemap</a></li>
-          <li><a href="/">Browse Topics</a></li>
+          <li><a href="../">Home</a></li>
+          <li><a href="../sitemap.xml">Sitemap</a></li>
+          <li><a href="../">Browse Topics</a></li>
         </ul>
       </div>
       <div class="footer-section">
         <h3>Categories</h3>
         <ul>
-          <li><a href="/#core-concepts">Core Concepts</a></li>
-          <li><a href="/#frameworks">Frameworks</a></li>
-          <li><a href="/#tools">Tools & Platforms</a></li>
+          <li><a href="../#core-concepts">Core Concepts</a></li>
+          <li><a href="../#frameworks">Frameworks</a></li>
+          <li><a href="../#tools">Tools & Platforms</a></li>
         </ul>
       </div>
     </div>
@@ -529,7 +529,7 @@ function generateTopicHTML(topic) {
     </div>
   </footer>
 
-  <script src="/js/main.js"></script>
+  <script src="../js/main.js"></script>
 </body>
 </html>`;
 }

@@ -30,7 +30,8 @@ class AIKnowledgeHub {
 
   async loadTopics() {
     try {
-      const response = await fetch('/data/topics.json');
+      const basePath = location.pathname.includes('/pages/') ? '../' : '';
+      const response = await fetch(`${basePath}data/topics.json`);
       const data = await response.json();
       this.topics = data.topics;
       this.filteredTopics = [...this.topics];
@@ -246,6 +247,10 @@ class AIKnowledgeHub {
       summaryText = topic.summary['15_plus'];
     }
 
+    const tagsHtml = topic.tags
+      .map(tag => `<span class="topic-card-tag">${this.escapeHtml(tag)}</span>`)
+      .join('');
+
     return `
       <div class="topic-card">
         <div class="topic-card-icon">${this.escapeHtml(topic.icon)}</div>
@@ -255,7 +260,7 @@ class AIKnowledgeHub {
           <p class="topic-card-summary">${this.escapeHtml(summaryText)}</p>
           <div class="topic-card-tags">${tagsHtml}</div>
           <div class="topic-card-actions">
-            <a href="${this.escapeHtml(topic.deepAnalysisUrl)}" class="btn btn-primary">
+            <a href="${this.escapeHtml(topic.deepAnalysisUrl.replace(/^\//, ''))}" class="btn btn-primary">
               Deep Analysis
             </a>
             <button class="btn btn-secondary" onclick="navigator.clipboard.writeText('${this.escapeHtml(topic.name)}')">
