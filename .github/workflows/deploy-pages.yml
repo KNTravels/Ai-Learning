@@ -24,7 +24,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p _site
-          cp -r index.html css js data pages robots.txt sitemap.xml _site/
+          cp -r v2/. _site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
