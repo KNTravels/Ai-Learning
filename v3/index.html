@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Developer Revision Guide — for Full-Stack Developers</title>
+  <meta name="description" content="An offline AI engineering revision guide for .NET, Angular, React, Python and SQL developers moving into AI agent engineering." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232b6cb0'/%3E%3Ctext x='16' y='22' font-size='16' font-family='Arial' fill='white' text-anchor='middle'%3EAI%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===================== Page header ===================== -->
+  <header class="page-header">
+    <h1 class="page-title">AI Developer Revision Guide</h1>
+    <p class="subtitle">
+      A documentation-style reference for .NET, C#, Angular, React, Python, SQL Server and PostgreSQL
+      developers transitioning into AI / agent engineering.
+    </p>
+  </header>
+
+  <!-- ===================== Toolbar ===================== -->
+  <div class="toolbar no-print">
+    <div class="toolbar-row">
+      <div class="control-group">
+        <label for="search-input">Search</label>
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Search by title, keyword, or content…"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="control-group">
+        <label for="experience-select">Experience Level</label>
+        <select id="experience-select">
+          <!-- options are populated by app.js from EXPERIENCE_LEVELS -->
+        </select>
+      </div>
+
+      <label class="checkbox-control">
+        <input type="checkbox" id="show-all-details" />
+        Show All Details
+      </label>
+
+      <label class="checkbox-control">
+        <input type="checkbox" id="show-all-deepdives" />
+        Show All Deep Dives
+      </label>
+    </div>
+
+    <div class="toolbar-row toolbar-row--actions">
+      <button id="print-btn" type="button" class="print-btn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        Print / Save PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== Main topic list ===================== -->
+  <main id="app-root">
+    <p id="loading-message">Loading topics…</p>
+
+    <p id="empty-state" class="empty-state" hidden>No topics match your search.</p>
+
+    <section id="topic-list" class="topic-list" aria-live="polite">
+      <!-- topic entries are rendered here by app.js, one per JSON record -->
+    </section>
+  </main>
+
+  <footer class="page-footer no-print">
+    <p>
+      Content is loaded entirely from <code>topics-data.js</code> (the same data as
+      <code>topics.json</code>, wrapped as a script so this page works by double-clicking
+      <code>index.html</code> directly, no server required) — add a new entry there and it will
+      appear here automatically, with no other code changes required.
+    </p>
+  </footer>
+
+  <script src="topics-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
