@@ -1,0 +1,780 @@
+/* =========================================================================
+   Revision Guide — common/styles.css
+   Shared by all three guides (/index.html AI, /devops/index.html,
+   /release/index.html) via <link href="../common/styles.css">. Fix or
+   restyle something here once and every page picks it up.
+   Documentation-style layout (think MDN / Microsoft Learn): no cards, no
+   grids, no motion. Generous whitespace, readable type, a simple divider
+   between topics. CSS custom properties are used throughout so that future
+   features (dark mode, alternate themes) only require swapping variables.
+   ========================================================================= */
+
+:root {
+  /* -- color tokens (swap these for a future dark-mode theme) -- */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f6f8fa;
+  --color-text: #1a202c;
+  --color-text-muted: #57606a;
+  --color-heading: #0f1b33;
+  --color-accent: #2b6cb0;
+  --color-accent-dark: #1e4e7d;
+  --color-border: #d8dee4;
+  --color-tag-bg: #eef3fb;
+  --color-tag-text: #2b6cb0;
+  --color-code-bg: #0f1b33;
+  --color-code-text: #e3e8f0;
+
+  /* -- toolbar tokens -- */
+  --toolbar-bg-from: #eef2f9;
+  --toolbar-bg-to: #e3e8f3;
+  --toolbar-border: #c9d2e0;
+
+  /* -- level badge tokens -- */
+  --badge-bg: #ece9fb;
+  --badge-text: #4c3fae;
+
+  /* -- panel / callout tokens -- */
+  --panel-border-accent: #2b6cb0;
+  --panel-bg: #f8fafc;
+  --deepdive-border-accent: #7c3aed;
+  --deepdive-bg: #faf8ff;
+
+  /* -- layout tokens -- */
+  --content-max-width: 1400px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+
+  /* -- typography tokens -- */
+  --font-body: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "Cascadia Code", "Consolas", "SFMono-Regular", Menlo, monospace;
+  --line-height-body: 1.65;
+}
+
+/* ----------------------------- Reset / base ----------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: var(--line-height-body);
+  font-size: 16px;
+}
+
+h1, h2, h3, h4 {
+  color: var(--color-heading);
+  line-height: 1.3;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+code {
+  font-family: var(--font-mono);
+  background: var(--color-bg-subtle);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ------------------------------ Top navigation ----------------------------- */
+/* Links between the three guides (AI / DevOps / Release). Plain static
+   <a href> links to sibling .html files -- no client-side router -- so the
+   app keeps working when opened directly via file:// with no server. */
+
+.top-nav {
+  display: flex;
+  gap: var(--space-2);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-3) 0;
+}
+
+.top-nav-link {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--color-text-muted);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px 999px 0 0;
+  border: 1.5px solid transparent;
+}
+
+.top-nav-link:hover {
+  color: var(--color-accent);
+}
+
+.top-nav-link.is-active {
+  color: var(--color-accent-dark);
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  border-bottom-color: var(--color-bg);
+}
+
+/* ------------------------------ Page header ------------------------------ */
+/* Bold title with a solid accent rule underneath, matching the reference
+   "documentation cover page" look rather than a dashboard app bar. */
+
+.page-header {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-3) var(--space-2);
+  border-bottom: 4px solid var(--color-accent);
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-heading);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  max-width: 70ch;
+}
+
+/* -------------------------------- Toolbar -------------------------------- */
+/* A bordered, softly-shaded control bar -- this is UI chrome, not a topic
+   "card", so it's exempt from the no-cards rule that governs topic display. */
+
+.toolbar {
+  max-width: var(--content-max-width);
+  margin: var(--space-4) auto 0;
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(to bottom, var(--toolbar-bg-from), var(--toolbar-bg-to));
+  border: 1px solid var(--toolbar-border);
+  border-radius: 10px;
+}
+
+/* Search box, Category select, and Print button share one row. The search
+   box grows to fill remaining space; the select and button stay a natural
+   width. Wraps on narrow screens instead of squeezing the search box away. */
+.toolbar-row--single {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0; /* lets children shrink instead of forcing the row to wrap */
+  flex: 0 0 auto;
+}
+
+.control-group--search {
+  flex: 1 1 240px;
+}
+
+.control-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.control-group select,
+.control-group input[type="search"] {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  width: 100%;
+  min-width: 140px;
+}
+
+.control-group select:focus,
+.control-group input[type="search"]:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* Small, icon-only button -- the printer icon alone is intuitive enough
+   that a text label isn't needed; a title/aria-label covers accessibility. */
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: var(--color-accent);
+  color: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.print-btn:hover {
+  background: var(--color-accent-dark);
+}
+
+/* ------------------------------ Category sections --------------------------- */
+
+.category-section + .category-section {
+  margin-top: var(--space-5);
+}
+
+.category-heading {
+  margin: 0;
+  padding-bottom: var(--space-2);
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-accent-dark);
+  border-bottom: 2px solid var(--color-accent);
+}
+
+/* ------------------------------- Main area ------------------------------- */
+
+#app-root {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-3) var(--space-6);
+}
+
+#loading-message,
+.empty-state {
+  color: var(--color-text-muted);
+}
+
+/* ------------------------------ Topic entries ----------------------------- */
+/* Plain documentation-style sections: numbered label, title + level badge,
+   short answer, and two inline expand links. No card backgrounds, no
+   shadows, no rounded panels around the topic itself. */
+
+.topic-entry {
+  padding: var(--space-4) 0;
+}
+
+.topic-entry + .topic-entry {
+  border-top: 1px solid var(--color-border);
+}
+
+.topic-number {
+  margin: 0 0 var(--space-1) 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.topic-heading-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+
+.topic-title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+/* Shows which category a topic belongs to right next to its title -- most
+   useful after a search, where matching topics from different categories no
+   longer sit tidily under one heading a reader can just glance up at. */
+.topic-category-tag {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* Row pairing the per-topic level tabs (left) with the importance star
+   rating (right) on one line. */
+.level-tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+/* Per-topic ENGINEER / STAFF / ARCHITECT / LEADERSHIP level tabs -- clicking
+   one swaps that single topic's summary/details/deep-dive to the tapped
+   level. Wraps onto a second line rather than overflowing on narrow screens
+   now that "LEADERSHIP" is the longest label in the group. */
+.level-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Star rating showing how important a topic is to know, e.g. for interviews. */
+.topic-importance {
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: #d4a017;
+  white-space: nowrap;
+}
+
+.level-tab {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--badge-text);
+  background: var(--badge-bg);
+  border: 1px solid transparent;
+  padding: 0.25rem 0.7rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.level-tab:hover {
+  border-color: var(--color-accent);
+}
+
+.level-tab.is-active {
+  color: #ffffff;
+  background: var(--color-accent);
+}
+
+.topic-summary {
+  margin: 0 0 var(--space-3) 0;
+  text-align: justify;
+}
+
+.topic-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+/* Each keyword gets its own light-green rectangular label rather than one
+   long comma-separated line, so a topic's keyword set reads as distinct,
+   scannable tags. */
+.keyword-tag {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: #1f6d3f;
+  background: #e6f6ec;
+  border: 1px solid #b9e6c9;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* The link row: plain text buttons with icons, separated by a dashed rule
+   beneath them (matches the reference design's underline treatment). */
+
+.topic-links {
+  display: flex;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.link-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.link-toggle:hover {
+  color: var(--color-accent-dark);
+}
+
+.link-toggle .icon {
+  flex-shrink: 0;
+}
+
+/* -------------------------------- Modal dialog ------------------------------ */
+/* "Additional Details" and "Deep Dive" open in this one shared modal instead
+   of an inline panel -- keeps the topic list compact and gives long
+   write-ups, code blocks, and reference lists room to breathe on any screen
+   size, phone included (see the mobile bottom-sheet override below). */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: rgba(15, 27, 51, 0.55);
+  z-index: 1000;
+  animation: modal-fade-in 0.15s ease-out;
+}
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 780px;
+  max-height: min(85vh, 900px);
+  background: var(--color-bg);
+  border-top: 4px solid var(--panel-border-accent);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(15, 27, 51, 0.35);
+  overflow: hidden;
+  animation: modal-slide-up 0.2s ease-out;
+}
+
+.modal--deepdive {
+  border-top-color: var(--deepdive-border-accent);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+/* Level badge sits inline with the title text (e.g. "Docker  STAFF"),
+   pushed to the right edge of the title row via the badge's margin-left:
+   auto below, rather than stacked above the title or crowding right next
+   to it. */
+.modal-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: 1.1rem;
+  min-width: 0;
+}
+
+/* Shows which experience level (ENGINEER / STAFF / ARCHITECT / LEADERSHIP)
+   the modal's content belongs to. Styled as an outlined stamp/pill (color
+   keyed off the level's position -- see .modal-level-badge--0..3 below) so
+   it reads distinctly from the solid-filled .level-tab buttons on the main
+   page; this pill treatment is scoped to the modal only, on purpose. */
+.modal-level-badge {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--color-bg);
+  border: 1.5px solid currentColor;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  transform: rotate(4deg);
+}
+
+/* Color palette for the pill, cycling every 4 levels (LEVEL_BADGE_COLOR_COUNT
+   in app.js) so any guide's EXPERIENCE_LEVELS -- 2 for PM, 4 for the rest --
+   gets a distinct color per level without a CSS rule per guide. */
+.modal-level-badge--0 { color: #0f7c8c; }
+.modal-level-badge--1 { color: #c2650a; }
+.modal-level-badge--2 { color: #be123c; }
+.modal-level-badge--3 { color: #6d28d9; }
+
+.modal-title-text {
+  min-width: 0;
+}
+
+.modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: var(--color-border);
+  color: var(--color-text);
+}
+
+.modal-body {
+  padding: var(--space-4);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal--details .modal-body {
+  background: var(--panel-bg);
+}
+
+.modal--deepdive .modal-body {
+  background: var(--deepdive-bg);
+}
+
+.modal-body p {
+  margin: 0 0 var(--space-3) 0;
+  text-align: justify;
+  /* PM guide details use single newlines within a paragraph to lay out
+     table-derived content (e.g. Advantages/Disadvantages bullet lists) as
+     separate lines. Other guides only ever use blank-line paragraph breaks,
+     so this has no visible effect on them. */
+  white-space: pre-line;
+}
+
+.modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Highlighter-style treatment for a topic's curated `highlights` phrases
+   (see applyHighlights() in app.js) -- scoped to the modal body only, so the
+   main topic list is untouched. Topics with no `highlights` field never
+   produce a <mark>, so this has no effect on guides that don't define it. */
+.modal-body mark {
+  background: #fff59d;
+  color: inherit;
+  padding: 0.05em 0.15em;
+  border-radius: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.panel-section {
+  margin-top: var(--space-3);
+}
+
+.panel-section h3 {
+  font-size: 0.95rem;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.code-block {
+  margin: var(--space-2) 0 0 0;
+  background: var(--color-code-bg);
+  color: var(--color-code-text);
+  padding: var(--space-3);
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+/* Reset the global inline `code` styling (background/padding meant for
+   prose like <code>topics.json</code>) so it doesn't fight the <pre> block's
+   own background -- otherwise each wrapped line gets its own highlight box. */
+.code-block code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+.code-caption {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: var(--space-2) 0 0 0;
+}
+
+.panel-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.panel-images figure {
+  margin: 0;
+  flex: 1 1 240px;
+}
+
+.panel-images img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);
+  display: block;
+}
+
+.panel-images figcaption {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+.panel-references {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.panel-references li {
+  margin-bottom: var(--space-1);
+}
+
+/* --------------------------------- Footer --------------------------------- */
+
+.page-footer {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-3) var(--space-6);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* --------------------------------- Utility --------------------------------- */
+
+.hidden {
+  display: none !important;
+}
+
+/* Keeps an element in the accessibility tree (screen readers, labels) while
+   removing it from visual layout entirely -- used for the "Search" /
+   "Category" toolbar labels, whose text is redundant once the input has a
+   placeholder / the select's purpose is obvious, but whose <label> element
+   still needs to exist for the input to be properly labelled. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================================================================
+   Responsive: the toolbar row wraps below 640px -- the search box takes its
+   own full-width row and the select/button relax their minimum width.
+   ========================================================================= */
+
+@media (max-width: 640px) {
+  .control-group select,
+  .control-group input[type="search"] {
+    min-width: 0;
+  }
+
+  .control-group--search {
+    flex-basis: 100%;
+  }
+
+  /* Four level tabs (incl. the longer "LEADERSHIP") get slightly tighter
+     padding on phones so two of them comfortably share a row when wrapped. */
+  .level-tab {
+    font-size: 0.68rem;
+    padding: 0.25rem 0.55rem;
+  }
+
+  /* Modal becomes a full-width bottom sheet on phones: easier to reach with
+     a thumb than a small centered dialog, and avoids letterboxing the
+     content on a narrow, short viewport. */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal {
+    max-width: none;
+    max-height: 88vh;
+    border-radius: 16px 16px 0 0;
+    animation: modal-slide-up-mobile 0.2s ease-out;
+  }
+
+  @keyframes modal-slide-up-mobile {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+}
+
+/* =========================================================================
+   Print styles: only topic titles and the currently selected experience
+   level's summary should appear on paper. Controls, buttons, links and
+   the modal are always excluded.
+   ========================================================================= */
+
+@media print {
+  .no-print,
+  .toolbar,
+  .topic-links,
+  .modal-overlay,
+  .topic-keywords {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+  }
+
+  .page-header {
+    border-bottom: none;
+    padding: 0 0 var(--space-3) 0;
+  }
+
+  #app-root {
+    padding: 0;
+    max-width: none;
+  }
+
+  .topic-entry {
+    padding: var(--space-3) 0;
+    break-inside: avoid;
+  }
+
+  .topic-entry + .topic-entry {
+    border-top: 1px solid #999;
+  }
+}

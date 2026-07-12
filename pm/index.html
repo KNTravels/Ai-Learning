@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PM Revision Guide — for Full-Stack Developers</title>
+  <meta name="description" content="An offline Project/Delivery Management revision guide covering SAFe, RFP/RFQ, pricing models, Azure architecture, DevOps, project lifecycle, leadership, and governance, sourced from the Sr Management Questionnaire." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%239d174d'/%3E%3Ctext x='16' y='22' font-size='14' font-family='Arial' fill='white' text-anchor='middle'%3EPM%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../common/styles.css" />
+</head>
+<body>
+
+  <!-- ===================== Top navigation ===================== -->
+  <nav class="top-nav no-print" aria-label="Revision guide sections">
+    <a href="../index.html" class="top-nav-link">AI</a>
+    <a href="../devops/index.html" class="top-nav-link">DevOps</a>
+    <a href="../release/index.html" class="top-nav-link">Release</a>
+    <a href="index.html" class="top-nav-link is-active">PM</a>
+    <a href="../genomics/index.html" class="top-nav-link">Genomics</a>
+  </nav>
+
+  <!-- ===================== Page header ===================== -->
+  <header class="page-header">
+    <h2 class="page-title">PM Revision Guide</h2>
+  </header>
+
+  <!-- ===================== Toolbar ===================== -->
+  <div class="toolbar no-print">
+    <div class="toolbar-row--single">
+      <div class="control-group control-group--search">
+        <label for="search-input" class="visually-hidden">Search</label>
+        <input type="search" id="search-input" placeholder="Search topics, keywords..." autocomplete="off" />
+      </div>
+
+      <div class="control-group">
+        <label for="category-select" class="visually-hidden">Category</label>
+        <select id="category-select">
+          <!-- options are populated by app.js from the topics' `category` field -->
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="level-select" class="visually-hidden">Level</label>
+        <select id="level-select">
+          <!-- options (PM / Leadership) populated by app.js -->
+        </select>
+      </div>
+
+      <button id="print-btn" type="button" class="print-btn" title="Print / Save PDF" aria-label="Print / Save PDF">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== Main topic list ===================== -->
+  <main id="app-root">
+    <p id="loading-message">Loading topics…</p>
+
+    <p id="empty-state" class="empty-state" hidden>No topics match this filter.</p>
+
+    <section id="topic-list" class="topic-list" aria-live="polite">
+      <!-- topic entries are rendered here by app.js, one per JSON record -->
+    </section>
+  </main>
+
+  <footer class="page-footer no-print">
+    <p class="app-version-line">Build <span id="app-version">dev</span></p>
+  </footer>
+
+  <!-- ===================== Shared modal (Additional Details / Deep Dive) ===================== -->
+  <div id="modal-overlay" class="modal-overlay no-print" hidden>
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-header">
+        <h2 id="modal-title" class="modal-title">
+          <span id="modal-title-text" class="modal-title-text"></span>
+          <span id="modal-level-badge" class="modal-level-badge"></span>
+        </h2>
+        <button type="button" id="modal-close" class="modal-close" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="topics-data.js"></script>
+  <script src="../common/version-data.js"></script>
+  <script>
+    // PM has only two experience levels (below/above 10 years in a PM role,
+    // labeled PM / Leadership) instead of the default Engineer/Staff/
+    // Architect/Leadership four-level set -- a different id set entirely,
+    // not just relabeled tags. Must be set before common/app.js loads.
+    // topics-data.js's summary/details/deepDive keys use these same ids
+    // (pm / leadership).
+    window.EXPERIENCE_LEVELS = [
+      { id: "pm", tag: "PM" },
+      { id: "leadership", tag: "Leadership" },
+    ];
+  </script>
+  <script src="../common/app.js"></script>
+</body>
+</html>
