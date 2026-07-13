@@ -62,7 +62,8 @@ window.TOPICS_DATA = [
         "it works on my machine",
         "one process per container",
         "A Dockerfile is just a recipe",
-        "baking secrets into images"
+        "baking secrets into images",
+        "Dockerfile -> docker build -> Image -> docker run -> Container"
       ],
       "senior": [
         "Linux namespaces (PID, network, mount) and cgroups (CPU/memory limits)",
@@ -141,7 +142,8 @@ window.TOPICS_DATA = [
         "encode operational runbooks as code that Kubernetes itself continuously executes"
       ],
       "leadership": [
-        "cost more than it saves"
+        "cost more than it saves",
+        "the bigger cost"
       ]
     }
   },
@@ -206,7 +208,8 @@ window.TOPICS_DATA = [
         "without every team re-deriving them"
       ],
       "leadership": [
-        "a one-command fix"
+        "a one-command fix",
+        "a manual scramble"
       ]
     }
   },
@@ -272,7 +275,8 @@ window.TOPICS_DATA = [
         "keep security gates and quality bars consistent"
       ],
       "leadership": [
-        "Pipeline speed compounds"
+        "Pipeline speed compounds",
+        "ships more often"
       ]
     }
   },
@@ -324,11 +328,13 @@ window.TOPICS_DATA = [
     "highlights": {
       "junior": [
         "reviewable in a pull request just like application code",
-        "The 'plan' step exists precisely so you never apply a surprise"
+        "The 'plan' step exists precisely so you never apply a surprise",
+        "committing state files with secrets in them to git"
       ],
       "senior": [
         "a three-way diff between config, state, and actual live infrastructure",
-        "prevents two people from applying conflicting changes simultaneously"
+        "prevents two people from applying conflicting changes simultaneously",
+        "sharing one state file across multiple environments"
       ],
       "architect": [
         "IaC at scale is a distributed configuration-management problem",
@@ -392,11 +398,14 @@ window.TOPICS_DATA = [
       "senior": [
         "cluster credentials never need to leave the cluster's own operator",
         "self-heals manual cluster drift",
-        "the operator quietly reverts it back to match Git on its next sync"
+        "the operator quietly reverts it back to match Git on its next sync",
+        "creating a race between two appliers"
       ],
       "architect": [
         "shrinks the credential attack surface dramatically across a large multi-team, multi-cluster fleet",
-        "cleanly splits build trust from deploy trust"
+        "cleanly splits build trust from deploy trust",
+        "monitor operator health and sync-lag as a fleet-wide SLO",
+        "one Argo CD instance managing 40 clusters"
       ],
       "leadership": [
         "a compliance win that costs little extra"
@@ -465,7 +474,8 @@ window.TOPICS_DATA = [
         "an artifact with a newly-disclosed critical CVE can be blocked from reaching production even after it already passed functional tests"
       ],
       "leadership": [
-        "Build-once-deploy-many"
+        "Build-once-deploy-many",
+        "infrastructure cost"
       ]
     }
   },
@@ -591,11 +601,13 @@ window.TOPICS_DATA = [
       "senior": [
         "cross-service queries silently miss results",
         "Log levels should map to action, not severity of wording",
-        "the main cause of alert/log fatigue"
+        "the main cause of alert/log fatigue",
+        "inconsistent field naming across services breaking cross-service correlation"
       ],
       "architect": [
         "logging cost and signal quality are directly in tension",
-        "head-based or tail-based sampling (keeping all error logs but only a fraction of successful-request logs)"
+        "head-based or tail-based sampling (keeping all error logs but only a fraction of successful-request logs)",
+        "full-fidelity logging of every request from every instance is often financially and operationally unsustainable"
       ],
       "leadership": [
         "pays out when you need it most"
@@ -651,7 +663,8 @@ window.TOPICS_DATA = [
     "highlights": {
       "junior": [
         "so you get one timeline showing exactly where the time went",
-        "A trace is the whole request's timeline; a span is one timed piece of work within it"
+        "A trace is the whole request's timeline; a span is one timed piece of work within it",
+        "pinpointing exactly where to optimize"
       ],
       "senior": [
         "standard header format (W3C Trace Context) carrying trace and span IDs across process boundaries",

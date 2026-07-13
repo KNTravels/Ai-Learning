@@ -48,7 +48,8 @@ window.TOPICS_DATA = [
         "Program Increment (PI)",
         "Release Train Engineer (RTE)",
         "Lean-Agile Mindset",
-        "Basic construct (Scrum Team vs Agile Release Train)"
+        "Basic construct (Scrum Team vs Agile Release Train)",
+        "Strategic Themes, KPIs, OKRs, Vision"
       ]
     }
   },
@@ -227,7 +228,8 @@ window.TOPICS_DATA = [
       "pm": [
         "Paying on achievement.",
         "Control the results.",
-        "milestone criteria have to be unambiguous"
+        "milestone criteria have to be unambiguous",
+        "eliminate the chance of fraud"
       ],
       "leadership": [
         "relationship bet",
@@ -310,7 +312,8 @@ window.TOPICS_DATA = [
     "highlights": {
       "pm": [
         "Best for web apps & APIs that need PaaS benefits",
-        "In-memory caching for improving response time."
+        "In-memory caching for improving response time.",
+        "Ideal for event-driven, serverless applications"
       ],
       "leadership": [
         "not familiarity",
@@ -357,7 +360,8 @@ window.TOPICS_DATA = [
         "Azure Functions -- Use for event-driven execution"
       ],
       "leadership": [
-        "Observability at microservices scale is a stack, not a single tool"
+        "Observability at microservices scale is a stack, not a single tool",
+        "production ready"
       ]
     }
   },
@@ -628,7 +632,8 @@ window.TOPICS_DATA = [
         "On-Time Delivery Rate",
         "Defect Density -- in software projects, this tracks the number of defects per size of the product",
         "Team Velocity -- for Agile teams, this measures how much work",
-        "Quality Assurance (QA) Procedures"
+        "Quality Assurance (QA) Procedures",
+        "helping identify efficiency levels and customer satisfaction"
       ],
       "leadership": [
         "Velocity is a forecasting number, not a productivity score"
@@ -735,7 +740,8 @@ window.TOPICS_DATA = [
       "pm": [
         "Mentorship and Coaching",
         "empower your team to take ownership of their career growth",
-        "Delegation and Stretch Assignments"
+        "Delegation and Stretch Assignments",
+        "Recognize Achievements, Regular Feedback"
       ],
       "leadership": [
         "plan-adherence penalizes the people who correctly adapted",
@@ -772,11 +778,13 @@ window.TOPICS_DATA = [
     "highlights": {
       "pm": [
         "Investigate, Identify alternatives, Evaluate, Select, Communicate",
-        "demanding without being unrealistic"
+        "demanding without being unrealistic",
+        "Use the Get Sh*t Done Wheel"
       ],
       "leadership": [
         "the balance point the other eight are built around",
-        "protect the team's time"
+        "protect the team's time",
+        "functions the same as a bad one"
       ]
     }
   },
@@ -807,11 +815,13 @@ window.TOPICS_DATA = [
     "highlights": {
       "pm": [
         "Celebrate milestones",
-        "Create a detailed project plan with clear deadlines"
+        "Create a detailed project plan with clear deadlines",
+        "Manage risks and contingencies"
       ],
       "leadership": [
         "Celebrate milestones",
-        "gives the team visible proof of progress"
+        "gives the team visible proof of progress",
+        "a wish list, not a plan"
       ]
     }
   },
@@ -889,7 +899,8 @@ window.TOPICS_DATA = [
       ],
       "leadership": [
         "reduced integration defects by 70%",
-        "regained control of delivery cadence"
+        "regained control of delivery cadence",
+        "not silently absorbed or unilaterally imposed"
       ]
     }
   },
@@ -1031,11 +1042,13 @@ window.TOPICS_DATA = [
       "pm": [
         "identity and access management (Azure AD)",
         "Core platform services to name together",
-        "implementing DDD"
+        "implementing DDD",
+        "building scalable, secure, and resilient systems"
       ],
       "leadership": [
         "balance between developer velocity and operational stability",
-        "shift-left testing"
+        "shift-left testing",
+        "trades a bit of short-term velocity for long-term stability"
       ]
     }
   }

@@ -67,12 +67,14 @@ window.TOPICS_DATA = [
       "senior": [
         "collapses toward 0 or 1 near the causal locus",
         "narrows a genome-wide scan to a 2 Mb interval",
-        "exactly analogous to smoothing a noisy time series before looking for a trend"
+        "exactly analogous to smoothing a noisy time series before looking for a trend",
+        "the fraction of reads carrying the non-reference (mutant-parent) allele"
       ],
       "architect": [
         "treating assembly and calling pipelines as the shared foundation",
         "pin every mutant-mapping project to a specific, versioned assembly release",
-        "not a one-time file every project just happens to point at"
+        "not a one-time file every project just happens to point at",
+        "false-positive variants add noise to the SNP-index signal"
       ],
       "leadership": [
         "borrowed against the quality of the reference assembly"
@@ -129,12 +131,14 @@ window.TOPICS_DATA = [
       "junior": [
         "like assembling a puzzle with large all-blue-sky patches where any piece could go anywhere",
         "checking for a clean diagonal per chromosome",
-        "something a short read simply can't do"
+        "something a short read simply can't do",
+        "DNA physically close on the same chromosome contacts more often than DNA on different chromosomes"
       ],
       "senior": [
         "N50 measures contiguity, not correctness",
         "a big contig can still be a wrong contig",
-        "misjoins where two genuinely separate chromosomal regions were incorrectly stitched together"
+        "misjoins where two genuinely separate chromosomal regions were incorrectly stitched together",
+        "manually review the Hi-C contact map in a curation tool before finalizing"
       ],
       "architect": [
         "shared infrastructure, not a per-project artifact",
@@ -339,12 +343,14 @@ window.TOPICS_DATA = [
         "index hopping",
         "Read length is capped by phasing",
         "a small fraction of strands in each cluster fall out of sync, degrading signal quality",
-        "cluster density and %PF (passing filter)"
+        "cluster density and %PF (passing filter)",
+        "clonal clusters of ~1000 identical fragment copies per spot"
       ],
       "architect": [
         "a real architectural trade-off, not just a cost question",
         "route projects to short- or long-read sequencing based on the analysis question, not by default habit",
-        "complementary, not competing"
+        "complementary, not competing",
+        "structurally incapable of resolving repeats longer than the read, so any platform requiring de novo assembly"
       ],
       "leadership": [
         "budget for long-read technology as a deliberate complement"
@@ -410,7 +416,8 @@ window.TOPICS_DATA = [
       "architect": [
         "shifted the assembly cost-quality frontier",
         "not treating it as an optional upgrade over short-read assembly",
-        "budget sequencing depth accordingly rather than treating long reads as an optional add-on"
+        "budget sequencing depth accordingly rather than treating long reads as an optional add-on",
+        "shifting cost from ongoing skilled labor to upfront sequencing spend"
       ],
       "leadership": [
         "it is the cheaper path to the actual goal, not the expensive one"
@@ -472,12 +479,14 @@ window.TOPICS_DATA = [
         "the 'squiggle'",
         "a k-mer effect",
         "basecaller model improvements alone have measurably raised nanopore accuracy over time on the exact same raw signal data",
-        "roughly 5-6 bases simultaneously inside the pore's sensing region"
+        "roughly 5-6 bases simultaneously inside the pore's sensing region",
+        "adaptive sampling (real-time, in-run selective sequencing of target regions)"
       ],
       "architect": [
         "real-time streaming output",
         "the platform choice should follow the actual latency/portability/selectivity requirement, not accuracy alone",
-        "not by chasing the last fraction of raw accuracy"
+        "not by chasing the last fraction of raw accuracy",
+        "basecalling and downstream analysis running concurrently with the sequencing run itself, not after it completes"
       ],
       "leadership": [
         "trades a bit of per-base accuracy for speed and portability"
