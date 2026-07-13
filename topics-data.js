@@ -48,16 +48,6 @@ window.TOPICS_DATA = [
       "caption": "A minimal guard clause enforcing a refund-limit rule before the tool actually runs",
       "snippet": "// Tool the model can call: issue_refund({ orderId, amount })\nasync function issueRefund({ orderId, amount }) {\n  // Hard rule, enforced in code -- NOT just requested in the prompt.\n  const REFUND_LIMIT = 50;\n  if (amount > REFUND_LIMIT) {\n    // Reject with a reason the model can relay to the user / escalate.\n    return { ok: false, reason: `Refunds over $${REFUND_LIMIT} need human approval.` };\n  }\n  return processRefund(orderId, amount);\n}"
     },
-    "images": [
-      {
-        "url": "images/rules-flow.svg",
-        "caption": "Request flowing through a rule engine / guardrail before being executed"
-      },
-      {
-        "url": "images/rules-layers.svg",
-        "caption": "Layered rules architecture from user intent to audit log"
-      }
-    ],
     "references": [
       {
         "title": "OpenAI - Guardrails for Agents",
@@ -130,16 +120,6 @@ window.TOPICS_DATA = [
       "caption": "A tiny orchestrator routing to a specialist agent based on a structured handoff",
       "snippet": "async function runOrchestrator(task) {\n  let state = { stage: 'research', task, notes: [] };\n\n  while (state.stage !== 'done') {\n    const agent = AGENTS[state.stage];           // { research, code, review }\n    const result = await agent.run(state);        // calls its own scoped LLM + tools\n    state = { ...state, ...result.handoff };       // e.g. { stage: 'code', notes }\n  }\n  return state;\n}"
     },
-    "images": [
-      {
-        "url": "images/swarm-flow.svg",
-        "caption": "Task decomposed by an orchestrator and distributed to parallel specialist agents"
-      },
-      {
-        "url": "images/swarm-layers.svg",
-        "caption": "Swarm architecture with orchestrator, specialist agents, and shared state"
-      }
-    ],
     "references": [
       {
         "title": "OpenAI Swarm (experimental multi-agent framework)",
@@ -212,16 +192,6 @@ window.TOPICS_DATA = [
       "caption": "A tiny step-executor walking a workflow definition and persisting state after each step",
       "snippet": "const steps = [\n  { id: 'extract', run: extractText },\n  { id: 'summarize', run: summarizeWithLLM },\n  { id: 'store', run: saveResult },\n];\n\nasync function runWorkflow(input) {\n  let state = { input };\n  for (const step of steps) {\n    state = await step.run(state);\n    await persistState(step.id, state); // checkpoint -- survives a crash/restart\n  }\n  return state;\n}"
     },
-    "images": [
-      {
-        "url": "images/workflow-flow.svg",
-        "caption": "A multi-step workflow moving from trigger to result"
-      },
-      {
-        "url": "images/workflow-layers.svg",
-        "caption": "Workflow architecture with definition, executor, state store, and error handling"
-      }
-    ],
     "references": [
       {
         "title": "Temporal - Durable Execution",
@@ -292,16 +262,6 @@ window.TOPICS_DATA = [
       "caption": "A simplified MCP-style tool manifest entry a protocol server exposes to any agent",
       "snippet": "{\n  \"name\": \"search_tickets\",\n  \"description\": \"Search the internal ticketing system by keyword and status\",\n  \"inputSchema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"query\": { \"type\": \"string\" },\n      \"status\": { \"type\": \"string\", \"enum\": [\"open\", \"closed\", \"any\"] }\n    },\n    \"required\": [\"query\"]\n  }\n}"
     },
-    "images": [
-      {
-        "url": "images/agent-protocol-flow.svg",
-        "caption": "A client application communicating through a protocol layer to a tool server"
-      },
-      {
-        "url": "images/agent-protocol-layers.svg",
-        "caption": "Agent protocol architecture spanning agent, protocol, and external systems"
-      }
-    ],
     "references": [
       {
         "title": "Model Context Protocol (MCP) Specification",
@@ -372,16 +332,6 @@ window.TOPICS_DATA = [
       "caption": "A small tool registry: schema-validated dispatch from a model's tool call to the real handler",
       "snippet": "const tools = {\n  get_weather: {\n    schema: { city: 'string' },\n    handler: ({ city }) => weatherApi.fetch(city),\n  },\n};\n\nasync function callTool(name, args) {\n  const tool = tools[name];\n  if (!tool) return { error: `Unknown tool: ${name}` };\n  validateAgainstSchema(args, tool.schema); // throws on bad/missing args\n  return tool.handler(args);\n}"
     },
-    "images": [
-      {
-        "url": "images/tools-flow.svg",
-        "caption": "An LLM deciding to call a tool, which executes and returns a result"
-      },
-      {
-        "url": "images/tools-layers.svg",
-        "caption": "Tool architecture from the LLM through a router to external systems"
-      }
-    ],
     "references": [
       {
         "title": "OpenAI - Function Calling Guide",
@@ -454,16 +404,6 @@ window.TOPICS_DATA = [
       "caption": "Retrieving only the relevant long-term memories before assembling the prompt",
       "snippet": "async function buildContext(userId, currentMessage) {\n  const queryVector = await embed(currentMessage);\n  const memories = await vectorStore.query({\n    namespace: userId,           // tenant isolation\n    vector: queryVector,\n    topK: 3,                     // only the most relevant facts\n  });\n  return memories.map((m) => m.text).join('\\n');\n}"
     },
-    "images": [
-      {
-        "url": "images/memory-flow.svg",
-        "caption": "Conversation flowing from short-term context into a long-term vector store"
-      },
-      {
-        "url": "images/memory-layers.svg",
-        "caption": "Tiered memory architecture from working memory to long-term retrieval"
-      }
-    ],
     "references": [
       {
         "title": "Anthropic - Context Engineering and Memory",
@@ -534,16 +474,6 @@ window.TOPICS_DATA = [
       "caption": "Chunk, retrieve, and assemble only the relevant context into the final prompt",
       "snippet": "async function assemblePrompt(question, knowledgeBase) {\n  const chunks = chunkBySection(knowledgeBase);     // not by raw char count\n  const relevant = await retrieveTopK(question, chunks, 5);\n\n  return [\n    SYSTEM_INSTRUCTIONS,\n    ...relevant.map((c) => `Source: ${c.title}\\n${c.text}`),\n    `Question: ${question}`,\n  ].join('\\n\\n');\n}"
     },
-    "images": [
-      {
-        "url": "images/context-management-flow.svg",
-        "caption": "Documents chunked, embedded, retrieved, and assembled into a prompt"
-      },
-      {
-        "url": "images/context-management-layers.svg",
-        "caption": "Context window composition competing for a finite token budget"
-      }
-    ],
     "references": [
       {
         "title": "Anthropic - Effective Context Engineering for AI Agents",
@@ -613,16 +543,6 @@ window.TOPICS_DATA = [
       "caption": "A PreToolUse hook chain that can block a tool call before it executes",
       "snippet": "const preToolHooks = [rateLimitCheck, permissionCheck, piiRedactionLog];\n\nasync function runWithHooks(toolName, args) {\n  for (const hook of preToolHooks) {\n    const result = await hook(toolName, args);\n    if (result?.blocked) return { ok: false, reason: result.reason };\n  }\n  return executeTool(toolName, args); // only reached if every hook passed\n}"
     },
-    "images": [
-      {
-        "url": "images/hooks-flow.svg",
-        "caption": "A lifecycle event intercepted by a hook handler before execution continues"
-      },
-      {
-        "url": "images/hooks-layers.svg",
-        "caption": "Hooks attached at pre-action, post-action, and error points in the agent loop"
-      }
-    ],
     "references": [
       {
         "title": "Claude Code - Hooks Reference",
@@ -694,16 +614,6 @@ window.TOPICS_DATA = [
       "caption": "A structured prompt template that keeps instructions, examples, and input separated",
       "snippet": "const SYSTEM_PROMPT = `You triage support tickets. Output JSON only: {\"severity\": \"low|medium|high\", \"summary\": string}.`;\n\nconst FEW_SHOT = [\n  { input: 'App crashes on login', output: '{\"severity\":\"high\",\"summary\":\"Login crash\"}' },\n];\n\nfunction buildMessages(ticketText) {\n  return [\n    { role: 'system', content: SYSTEM_PROMPT },\n    ...FEW_SHOT.flatMap((ex) => [\n      { role: 'user', content: ex.input },\n      { role: 'assistant', content: ex.output },\n    ]),\n    { role: 'user', content: ticketText },\n  ];\n}"
     },
-    "images": [
-      {
-        "url": "images/prompt-engineering-flow.svg",
-        "caption": "Iterating a prompt against model output until it meets requirements"
-      },
-      {
-        "url": "images/prompt-engineering-layers.svg",
-        "caption": "Prompt architecture from system instructions through to output schema"
-      }
-    ],
     "references": [
       {
         "title": "Anthropic - Prompt Engineering Overview",
@@ -772,16 +682,6 @@ window.TOPICS_DATA = [
       "caption": "A bounded perceive-plan-act-observe loop with a hard iteration ceiling",
       "snippet": "async function runAgentLoop(goal, { maxSteps = 8 } = {}) {\n  let state = { goal, history: [] };\n\n  for (let step = 0; step < maxSteps; step++) {\n    const decision = await planNextAction(state);      // Perceive + Plan\n    if (decision.done) return decision.finalAnswer;\n\n    const observation = await executeTool(decision);    // Act\n    state.history.push({ decision, observation });       // Observe\n  }\n  throw new Error('Agent loop exceeded max steps without completing.');\n}"
     },
-    "images": [
-      {
-        "url": "images/agent-loop-flow.svg",
-        "caption": "The perceive, plan, act, observe cycle repeating until the task completes"
-      },
-      {
-        "url": "images/agent-loop-layers.svg",
-        "caption": "Agent loop architecture with planner, executor, memory, and stop condition"
-      }
-    ],
     "references": [
       {
         "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
