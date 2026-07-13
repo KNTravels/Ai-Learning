@@ -59,13 +59,18 @@ window.TOPICS_DATA = [
     "highlights": {
       "junior": [
         "MAJOR.MINOR.PATCH",
-        "^2.4.1"
+        "^2.4.1",
+        "bumping only PATCH for a change that actually breaks an existing API",
+        "that caret is trusting the MAJOR segment's promise not to break anything"
       ],
       "senior": [
-        "^2.4.1"
+        "^2.4.1",
+        "a mislabeled release (a breaking change shipped as MINOR) can silently break every consumer",
+        "removing human judgment (and human error) from the versioning decision"
       ],
       "architect": [
-        "a trust protocol across an entire dependency ecosystem"
+        "a trust protocol across an entire dependency ecosystem",
+        "one popular package mislabeling a breaking change can cascade into widespread, hard-to-diagnose failures across unrelated projects"
       ]
     }
   },
@@ -116,13 +121,21 @@ window.TOPICS_DATA = [
     "highlights": {
       "junior": [
         "CHANGELOG.md",
-        "Added, Changed, Fixed, Removed"
+        "Added, Changed, Fixed, Removed",
+        "scan it in seconds instead of reading every commit",
+        "exist so every project's changelog is scannable in the same shape"
       ],
       "senior": [
-        "CHANGELOG.md"
+        "CHANGELOG.md",
+        "guarantees the changelog is never out of sync with what actually shipped",
+        "since the raw material already exists by release time"
       ],
       "leadership": [
         "a byproduct of the process that ships the release"
+      ],
+      "architect": [
+        "a hand-maintained changelog is structurally impossible to keep accurate",
+        "generated deterministically from commit/PR metadata rather than hand-maintained prose"
       ]
     }
   },
@@ -173,11 +186,22 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "flag debt"
+        "flag debt",
+        "separating 'code is deployed' from 'feature is visible.'",
+        "lets you instantly turn something off in production without waiting for a new deploy"
       ],
       "leadership": [
         "instantly turn off a risky feature without a redeploy",
         "instant rollback, zero deploy time"
+      ],
+      "senior": [
+        "hashes a stable user attribute (user ID) modulo 100",
+        "essential for both debugging and a coherent user experience during a gradual ramp",
+        "which would make debugging nearly impossible"
+      ],
+      "architect": [
+        "flags never get removed and the codebase accumulates untestable combinatorial complexity",
+        "automated staleness detection (flags fully rolled out and untouched for N days) is necessary"
       ]
     }
   },
@@ -228,11 +252,19 @@ window.TOPICS_DATA = [
     "highlights": {
       "junior": [
         "zero downtime",
-        "Blue (currently live) and Green (idle)"
+        "Blue (currently live) and Green (idle)",
+        "test it thoroughly while Blue still serves real users",
+        "Old Environment Stays Warm as Rollback"
       ],
       "architect": [
-        "zero downtime",
-        "near-zero downtime and instant rollback"
+        "a portfolio-level risk allocation, not a one-size-fits-all default",
+        "Blue-green's doubled infrastructure cost is a deliberate trade against deployment risk",
+        "organizations often reserve it for their highest-risk, highest-blast-radius services"
+      ],
+      "senior": [
+        "The atomicity of the traffic switch is blue-green's core safety property",
+        "the cutover itself takes seconds and is trivially reversible",
+        "doubling infrastructure cost during the transition window"
       ]
     }
   },
@@ -282,11 +314,20 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "small blast radius",
-        "route a small percentage of real traffic (say 5%)"
+        "route a small percentage of real traffic (say 5%)",
+        "like testing a new recipe on a few customers before putting it on the full menu"
       ],
       "leadership": [
         "limits the cost of being wrong to a small percentage of traffic"
+      ],
+      "senior": [
+        "a small traffic percentage can otherwise produce noisy swings that look like a failure",
+        "a canary-analysis tool (Flagger, Argo Rollouts) queries the metrics backend for both canary and stable variants"
+      ],
+      "architect": [
+        "canary analysis becomes a shared capability rather than a per-team reimplementation",
+        "without each team building bespoke statistical tooling",
+        "treating canary analysis as advisory rather than wiring it to actually gate promotion automatically"
       ]
     }
   },
@@ -336,11 +377,18 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "never all at once",
-        "replacing planks in a bridge while people are still walking across it"
+        "replacing planks in a bridge while people are still walking across it",
+        "a fixed batch size (e.g. 1 instance or 25% of instances)"
       ],
       "senior": [
-        "maxSurge and maxUnavailable"
+        "maxSurge and maxUnavailable",
+        "gating progression on readiness-probe success per batch",
+        "a broken new version halts the rollout before affecting all instances"
+      ],
+      "architect": [
+        "every rolling deploy implicitly runs two live versions concurrently",
+        "no infrastructure-level safety net (unlike blue-green) exists to catch a compatibility violation",
+        "shifts all compatibility risk onto the application layer"
       ]
     }
   },
@@ -391,11 +439,22 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "senior": [
-        "expand-contract migration pattern"
+        "expand-contract migration pattern",
+        "it ensures the previous app version remains compatible with the (still-expanded) current schema",
+        "The expand-contract migration pattern -- add new schema elements without removing old ones"
       ],
       "leadership": [
         "a 10-minute incident instead of a 2-hour outage",
         "An untested rollback plan is not really a rollback plan"
+      ],
+      "junior": [
+        "if this release breaks production, how do we undo it, fast?",
+        "'rollback' quietly turns into 'rebuild from an old commit and hope,' which is much slower"
+      ],
+      "architect": [
+        "turns 'can we roll back' from a hopeful assumption into a verified property of every release",
+        "column drops, type narrowing",
+        "artifact retention policy guarantees the immediately-prior version is always available for instant rollback"
       ]
     }
   },
@@ -444,11 +503,22 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "You can now export orders to CSV"
+        "You can now export orders to CSV",
+        "'refactored OrderExportService.cs'",
+        "the changelog's technical entries translated into plain language people outside engineering can understand"
       ],
       "leadership": [
         "reduce support tickets by telling users what changed before they have to ask",
         "prevents more confusion than any amount of extra polish on the writing"
+      ],
+      "senior": [
+        "a plain-language end-user version and a precise, behaviorally-detailed version for API/integration consumers who need exact specifics",
+        "schedule support/customer-success briefings ahead of publish, not simultaneously with it"
+      ],
+      "architect": [
+        "causes shipped features to surprise the very people who must answer for them",
+        "explicit sign-off from support and customer-success before high-impact launches",
+        "letting each team run its own uncoordinated communication process"
       ]
     }
   },
@@ -499,13 +569,21 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "Change Advisory Board (CAB)"
+        "Change Advisory Board (CAB)",
+        "similar to how a pull request needs review before merging code",
+        "pre-approve a category of low-risk 'standard changes'"
       ],
       "senior": [
-        "pre-approved, low-risk, repeatable"
+        "pre-approved, low-risk, repeatable",
+        "review intensity scales with actual risk rather than applying one process uniformly",
+        "having no defined emergency-change path, forcing incident responders to bypass process entirely"
       ],
       "leadership": [
         "a direct measure of whether governance is proportional or just overhead"
+      ],
+      "architect": [
+        "a direct signal of whether governance is calibrated correctly or has become blanket bureaucracy applied regardless of risk",
+        "blast radius, rollback complexity, historical incident correlation with similar changes"
       ]
     }
   },
@@ -555,11 +633,20 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "senior": [
-        "'release-ready' from 'deploy-ready'"
+        "'release-ready' from 'deploy-ready'",
+        "the planning, approval, and communication layer that turns a technically-ready build into an organizationally-ready release"
       ],
       "leadership": [
         "turns finished code into something users can actually rely on",
         "releases become boring and predictable, not that they're impressive to watch"
+      ],
+      "junior": [
+        "what's in this release, when does it ship, who approved it, and what do we do if it breaks",
+        "confirms rollback readiness before shipping"
+      ],
+      "architect": [
+        "potentially hundreds of independently-developed changes converge into coordinated, auditable production releases",
+        "vs. fully independent team releases (fast, but risk of uncoordinated conflicts)"
       ]
     }
   },
@@ -609,13 +696,17 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "entry criteria (what must be true to start it) and exit criteria (what must be true to move on)"
+        "entry criteria (what must be true to start it) and exit criteria (what must be true to move on)",
+        "tells you what work is expected right now"
       ],
       "senior": [
-        "manual checklists quietly get skipped under pressure"
+        "manual checklists quietly get skipped under pressure",
+        "turns 'is this release ready' from a subjective judgment call into a checklist",
+        "meaningful across teams that don't share full context"
       ],
       "architect": [
-        "the state machine underlying release governance"
+        "freeing humans to focus on exceptions rather than routine status tracking across dozens of concurrent releases",
+        "tooling -- not people -- tracks and enforces which releases are allowed to progress"
       ]
     }
   },
@@ -665,14 +756,22 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "why is X not in this release"
+        "why is X not in this release",
+        "everyone building whatever they want and hoping it comes together",
+        "checks dependencies and capacity"
       ],
       "senior": [
-        "scope churn"
+        "scope churn",
+        "every scope decision (in, out, deferred) should have a visible reason",
+        "planning to 100% of capacity with no buffer for the unexpected"
       ],
       "leadership": [
         "scope churn",
         "treats any surprise as a crisis by design"
+      ],
+      "architect": [
+        "making the trade-offs (what we're NOT doing, and why) visible and defensible to stakeholders rather than implicit and disputed after the fact",
+        "sequencing constrained capacity against competing priorities across teams"
       ]
     }
   },
@@ -722,11 +821,21 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "teams quietly stop using it"
+        "teams quietly stop using it",
+        "nobody accidentally schedules a risky deploy right before a holiday",
+        "shows when each team's releases are planned"
       ],
       "leadership": [
         "A manually-maintained calendar goes stale fast",
         "automatically block a bad scheduling decision"
+      ],
+      "senior": [
+        "becomes a direct cause of avoidable release collisions and freeze-period violations",
+        "rather than being a manually-maintained document that drifts out of sync with reality"
+      ],
+      "architect": [
+        "a calendar that depends on manual upkeep will not survive contact with dozens of independently-operating teams",
+        "a calendar service exposes an API that any team's release tooling can query"
       ]
     }
   },
@@ -776,11 +885,21 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "a rule that can't answer that is just friction, not safety"
+        "a rule that can't answer that is just friction, not safety",
+        "needs a manager and a security review to sign off first"
       ],
       "leadership": [
         "low-risk changes move fast and high-risk ones get real scrutiny",
         "point to a specific incident type they'd actually prevent"
+      ],
+      "senior": [
+        "either slows down the former unnecessarily or under-scrutinizes the latter, and often both happen simultaneously",
+        "automate risk classification and gate enforcement wherever the signal is available"
+      ],
+      "architect": [
+        "adjusting policy over time rather than treating the initial design as permanent",
+        "decoupled from any single team's interpretation",
+        "measuring the correlation between governance rigor and actual incident rates"
       ]
     }
   },
@@ -830,11 +949,20 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "similar to a pre-flight checklist"
+        "are the tests passing, is there a rollback plan, does on-call know this is happening?",
+        "making sure nothing important got missed in the rush to ship"
       ],
       "leadership": [
         "far cheaper than catching the same problems at the final go/no-go meeting",
         "it's a rubber stamp"
+      ],
+      "senior": [
+        "it's performing verification while the real decision was made in advance",
+        "readiness criteria span technical signals (test results, monitoring baselines)"
+      ],
+      "architect": [
+        "not because reviewers are lenient, but because releases arriving at the gate have already been continuously verified",
+        "the go/no-go meeting becomes a review of already-known status, not a discovery session"
       ]
     }
   },
@@ -884,11 +1012,21 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "action items from last time actually got done"
+        "action items from last time actually got done",
+        "keeps the same mistakes from repeating release after release"
       ],
       "leadership": [
         "otherwise it's just a meeting that quietly stops mattering",
         "no single team's retro would catch alone"
+      ],
+      "senior": [
+        "a retro that generates good discussion but no tracked follow-through is theater",
+        "teams learn quickly that raising issues doesn't lead anywhere, which kills future participation"
+      ],
+      "architect": [
+        "only cross-team pattern analysis catches systemic problems repeating across the whole release process",
+        "aggregating patterns across many retrospectives",
+        "rolling out process changes without measuring whether they worked"
       ]
     }
   },
@@ -938,11 +1076,20 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "shipping a new, corrected version instead of reverting",
-        "a fast-tracked pipeline instead of a normal one"
+        "a fast-tracked pipeline instead of a normal one",
+        "if a migration already ran, going back to the old code might break things worse"
       ],
       "leadership": [
         "not during the pressure of an actual incident"
+      ],
+      "senior": [
+        "the pressure to ship fast during an incident is exactly when skipping validation is most tempting and most dangerous",
+        "a pre-agreed fast-track process matters more than heroics"
+      ],
+      "architect": [
+        "a real-time debate during an active incident when decision quality is at its worst",
+        "irreversible ledger-writing migrations",
+        "forcing it to be re-litigated live every time"
       ]
     }
   },
@@ -993,14 +1140,20 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "Gitflow, GitHub Flow, and trunk-based development",
-        "GitHub Flow is basically Gitflow with the ceremony stripped away"
+        "GitHub Flow is basically Gitflow with the ceremony stripped away",
+        "GitHub Flow simplifies this to just short-lived feature branches merging into main"
       ],
       "senior": [
-        "trades stability for speed you can't actually afford"
+        "trades stability for speed you can't actually afford",
+        "Gitflow defers integration risk to a dedicated release branch",
+        "assumes main is always deployable"
       ],
       "leadership": [
         "trades stability for speed you can't actually afford"
+      ],
+      "architect": [
+        "a strategy mismatched to those constraints creates friction that no amount of team discipline fully compensates for",
+        "number of concurrently-supported release lines, deployment frequency, and CI/CD investment"
       ]
     }
   },
@@ -1051,11 +1204,21 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "feature, release, hotfix, and develop branches",
-        "the one exception to 'branch from develop'"
+        "the one exception to 'branch from develop'",
+        "urgent production fixes that can't wait for the normal release cycle",
+        "A feature branch holds work for one specific feature"
       ],
       "leadership": [
         "unenforced conventions erode quietly over time"
+      ],
+      "senior": [
+        "let tooling (CI pipelines, branch protection rules) apply different rules automatically based on branch name pattern",
+        "hotfix/* branches might skip the full test suite for speed but require two approvals"
+      ],
+      "architect": [
+        "it silently breaks automation and audit trails that assumed the convention held",
+        "a hotfix/* branch automatically triggers expedited change-management review",
+        "compliance audits can all key off branch type"
       ]
     }
   },
@@ -1105,11 +1268,17 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "gets a real review; a two-thousand-line one gets a rubber stamp"
+        "gets a real review; a two-thousand-line one gets a rubber stamp",
+        "protect your main branch so nobody pushes directly to it by accident"
       ],
       "senior": [
-        "short-lived branches, small reviewable pull requests, and enforced branch protection rules",
-        "quietly stops being a real rule"
+        "quietly stops being a real rule",
+        "a reviewer can meaningfully evaluate a 50-line diff but will rubber-stamp a 2,000-line one",
+        "erodes the rule's credibility"
+      ],
+      "architect": [
+        "an organization can mandate trunk-based development while individual teams quietly practice long-lived branches and large merges",
+        "only enforced, measured hygiene metrics reveal that gap before it causes real damage"
       ]
     }
   },
@@ -1159,13 +1328,20 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "different questions with different consequences"
+        "different questions with different consequences",
+        "if it stops responding correctly, they know something's wrong and can react"
       ],
       "senior": [
-        "liveness (is the process still running) from readiness (can it currently serve traffic)"
+        "Liveness and readiness checks answer different questions and should trigger different actions",
+        "conflating the two causes either premature restarts (killing a process that's just warming up)"
       ],
       "leadership": [
         "a single slow dependency doesn't cascade into every instance failing its check simultaneously"
+      ],
+      "architect": [
+        "overly permissive checks mask degradation until it becomes a major incident",
+        "a dependency health cache rather than a live check on every poll",
+        "At scale, health check design is a key input to automated recovery posture"
       ]
     }
   },
@@ -1216,13 +1392,20 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "senior": [
-        "golden signals (latency, traffic, errors, saturation)"
+        "an aggregate dashboard can look healthy overall while a new version is quietly degrading a subset of traffic",
+        "Segmenting metrics by release version (not just by service)"
       ],
       "architect": [
-        "turns metrics from a health dashboard into an actual release-safety tool"
+        "an immediate, automated signal pointing at the responsible release",
+        "a regression's root cause becomes a manual investigation across dashboards",
+        "enforce version-tagging as a platform-level requirement, not a per-team convention"
       ],
       "leadership": [
         "Tag metrics by release version from day one"
+      ],
+      "junior": [
+        "how many requests are failing, how slow responses are, how much traffic is coming in",
+        "catch a problem before it becomes a big one"
       ]
     }
   },
@@ -1272,13 +1455,18 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "logs (what happened), metrics (how much/how often), and traces (the path a request took)"
+        "logs (what happened), metrics (how much/how often), and traces (the path a request took)",
+        "digging into the actual data rather than only watching pre-built dashboards"
       ],
       "senior": [
-        "a system with excellent monitoring but poor observability"
+        "a system with excellent monitoring but poor observability",
+        "leaves engineers guessing the moment something unprecedented happens",
+        "propagated consistently across every service a request touches"
       ],
       "architect": [
-        "becomes the blind spot that turns every incident touching it into a much longer investigation"
+        "becomes the blind spot that turns every incident touching it into a much longer investigation",
+        "observability's value depends entirely on consistency",
+        "a single unobservable or inconsistently-instrumented service"
       ],
       "leadership": [
         "becomes the blind spot that turns every incident touching it into a much longer investigation"
@@ -1331,13 +1519,18 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        ".github/workflows/"
+        ".github/workflows/",
+        "GitHub runs it automatically whenever you push code or open a pull request",
+        "GitHub provides runners (virtual machines) to execute them"
       ],
       "senior": [
-        "zero-setup integration for anything already hosted on GitHub"
+        "jobs run in parallel by default unless explicitly dependent via needs:",
+        "avoid duplicating pipeline logic across repos",
+        "use job-level parallelism aggressively for independent work"
       ],
       "architect": [
-        "a portability cost worth weighing"
+        "the tight coupling to GitHub's specific event and permissions model is a real migration cost if the organization ever needs to move off GitHub",
+        "self-hosted runners providing control over the execution environment"
       ]
     }
   },
@@ -1387,14 +1580,20 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "full control over the build environment"
+        "full control over the build environment",
+        "Jenkins is a CI/CD tool you install and run on your own servers, unlike GitHub Actions or other hosted options"
       ],
       "senior": [
-        "Jenkins' plugin ecosystem is both its greatest strength and its biggest operational risk"
+        "Jenkins' plugin ecosystem is both its greatest strength and its biggest operational risk",
+        "plugin compatibility issues, security vulnerabilities, and update conflicts become an ongoing maintenance burden"
       ],
       "leadership": [
         "full control over the build environment",
         "untested plugin upgrades on production have caused real outages"
+      ],
+      "architect": [
+        "committing to owning CI/CD infrastructure operations -- patching, scaling, plugin security, and uptime",
+        "the operational fragility of a single long-lived controller and static agent fleet"
       ]
     }
   },
@@ -1444,13 +1643,18 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        ".gitlab-ci.yml"
+        ".gitlab-ci.yml",
+        "right alongside your other GitLab features",
+        "GitLab runs it automatically when you push code or open a merge request"
       ],
       "senior": [
-        "feel integrated rather than bolted on as a separate system"
+        "feel integrated rather than bolted on as a separate system",
+        "reduces the need to stitch together separate tools for security, compliance, and deployment visibility"
       ],
       "architect": [
-        "choosing GitLab as an integrated platform"
+        "choosing GitLab as an integrated platform",
+        "the pipeline engine alone doesn't differentiate strongly from competitors",
+        "the combined platform reduces integration overhead in exchange for tighter vendor coupling"
       ]
     }
   },
@@ -1500,13 +1704,19 @@ window.TOPICS_DATA = [
     ],
     "highlights": {
       "junior": [
-        "pipelines, boards, repos, and artifacts"
+        "how well it all works together in one place",
+        "Azure Pipelines for CI/CD, Boards for tracking work items, Repos for source control, and Artifacts for package management"
       ],
       "senior": [
-        "removes a whole class of credential-leak risk from your CI/CD system"
+        "removes a whole class of credential-leak risk from your CI/CD system",
+        "deployment targets can all be managed through the same identity and governance model the organization already has"
       ],
       "leadership": [
         "the ecosystem fit is the real value driver"
+      ],
+      "architect": [
+        "adoption is typically driven by existing Microsoft ecosystem investment rather than the tool being independently superior",
+        "unified governance and audit trail across code, pipelines, and infrastructure in one compliance view"
       ]
     }
   }

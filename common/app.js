@@ -384,7 +384,7 @@ function renderDetailsPanelContent(topic) {
     .map(
       (image) => `
         <figure>
-          <img src="${escapeHtml(image.url)}" alt="${escapeHtml(image.caption || "")}" loading="lazy" />
+          <img src="${escapeHtml(image.url)}" alt="${escapeHtml(image.caption || "")}" />
           <figcaption>${escapeHtml(image.caption || "")}</figcaption>
         </figure>
       `
@@ -465,7 +465,11 @@ function closeModal() {
 
 /** Renders a single topic as a plain documentation-style section: numbered
  *  label, title, per-topic ENGINEER/STAFF/ARCHITECT level tabs, the
- *  level-specific summary, and two inline expand links. No cards, no grids. */
+ *  level-specific summary, and two inline expand links. No cards, no grids.
+ *  Also renders the Additional Details content into a `.topic-print-details`
+ *  block that's display:none on screen (the modal stays the on-screen way to
+ *  read it) but shown by the print stylesheet, so printing includes full
+ *  details by default instead of just the summary. */
 function renderTopicEntry(topic, index) {
   // Each topic remembers its own selected level across re-renders, so
   // switching one topic's level tab never affects any other topic.
@@ -506,6 +510,10 @@ function renderTopicEntry(topic, index) {
       <button class="link-toggle" type="button" data-action="open-deepdive" aria-haspopup="dialog">
         ${ICONS.deepDive} Deep Dive
       </button>
+    </div>
+    <div class="topic-print-details">
+      <h3 class="topic-print-details-heading">Additional Details</h3>
+      ${renderDetailsPanelContent(topic)}
     </div>
   `;
 

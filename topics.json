@@ -63,10 +63,18 @@
     "highlights": {
       "junior": [
         "never offer refunds above $50",
-        "Never delete a file without confirmation."
+        "Never delete a file without confirmation.",
+        "input validation and authorization checks in an ASP.NET Core API",
+        "keep rules short and specific, and back critical rules with code-level checks"
       ],
       "architect": [
-        "a defense-in-depth stack of prompt-level policy, programmatic validation, and external guardrail services"
+        "design rules to fail closed for high-risk actions",
+        "so the same enforcement logic is shared and testable across every agent and tool in the platform, independent of any single prompt"
+      ],
+      "senior": [
+        "a guardrail service running independently of the LLM",
+        "tool permissions are a stronger control than instructions",
+        "each one can reject the call with a reason string the model can read and react to, instead of failing silently"
       ]
     }
   },
@@ -132,11 +140,16 @@
     ],
     "highlights": {
       "junior": [
-        "splitting a monolith into focused microservices",
-        "Task -> Orchestrator -> Specialist Agents (parallel) -> Merged Result."
+        "Task -> Orchestrator -> Specialist Agents (parallel) -> Merged Result.",
+        "give each agent a scoped job and a small toolset"
       ],
       "architect": [
-        "a distributed-systems problem wearing an AI costume"
+        "a distributed-systems problem wearing an AI costume",
+        "N agents can cost far more than one, justified only when decomposition genuinely improves quality or throughput"
+      ],
+      "senior": [
+        "agents 'hand off' via a structured signal rather than free text",
+        "design handoffs as structured data for deterministic routing"
       ]
     }
   },
@@ -203,13 +216,19 @@
     ],
     "highlights": {
       "junior": [
-        "a fixed, predictable sequence of steps an agent follows"
+        "a defined list of steps, each doing one thing, failing fast on error",
+        "calling a tool or an LLM at each one and checking the result before moving to the next step"
       ],
       "architect": [
-        "trading flexibility for predictability, testability, and observability"
+        "often non-negotiable in regulated domains",
+        "the workflow can pause for human approval and resume later without re-running already-completed steps"
       ],
       "leadership": [
         "Predictability is the business case for workflows"
+      ],
+      "senior": [
+        "the agentic analogue of a DAG-based orchestration engine",
+        "model the workflow as data, not imperative code"
       ]
     }
   },
@@ -275,13 +294,19 @@
     ],
     "highlights": {
       "junior": [
-        "Model Context Protocol (MCP) defines a standard way for an agent to discover and call tools"
+        "Model Context Protocol (MCP) defines a standard way for an agent to discover and call tools",
+        "you don't write custom glue code per tool"
       ],
       "architect": [
-        "reduces N×M integration cost to N+M"
+        "vendor lock-in from a proprietary protocol",
+        "any compliant agent — built by any team, on any framework — gets the same governed access path into a system"
       ],
       "leadership": [
         "Standard protocols are an insurance policy against vendor lock-in"
+      ],
+      "senior": [
+        "expose narrow, well-described capabilities rather than one do-everything endpoint",
+        "your agent's tool router treats every server the same way regardless of what it wraps internally"
       ]
     }
   },
@@ -350,6 +375,18 @@
         "Tools are what let an AI agent take real action",
         "Every tool granted to an agent is a new risk surface",
         "Treat each tool grant like a permission grant to a new employee"
+      ],
+      "junior": [
+        "an LLM can only produce text",
+        "the model picks the name and fills in the parameters; your code is the only thing that actually calls the real function"
+      ],
+      "senior": [
+        "structurally identical to a controller dispatch layer in ASP.NET Core",
+        "keep tools narrow and composable; enforce least-privilege execution"
+      ],
+      "architect": [
+        "The tool layer is an API gateway for your agent ecosystem",
+        "few broad tools are easy to build but hard to secure and audit; many narrow tools mirror good microservice design"
       ]
     }
   },
@@ -416,11 +453,21 @@
     ],
     "highlights": {
       "junior": [
-        "like a stateless HTTP request with no session cookie"
+        "like a stateless HTTP request with no session cookie",
+        "only persist what's actually useful for future interactions, not every raw message"
       ],
       "leadership": [
         "Memory is a data-retention decision as much as a feature decision",
         "sensitive data may be retained"
+      ],
+      "senior": [
+        "summarize context proactively rather than at a hard token limit",
+        "run a similarity search to pull back only the handful of memories actually relevant to the current message"
+      ],
+      "architect": [
+        "one customer's memory never leaks into another's",
+        "retention as a compliance decision, not just engineering",
+        "like caching and a data warehouse as one system"
       ]
     }
   },
@@ -486,13 +533,19 @@
     ],
     "highlights": {
       "junior": [
-        "RAG (Retrieval-Augmented Generation)"
+        "RAG (Retrieval-Augmented Generation)",
+        "fetch the few chunks closest in meaning to the user's question before building the prompt"
       ],
       "architect": [
-        "the context window as a scarce, contested resource that must be actively curated"
+        "a great model fed poor context underperforms a modest model fed excellent context",
+        "long-context models vs. RAG, which are complementary, not substitutes"
       ],
       "leadership": [
         "More context isn't free"
+      ],
+      "senior": [
+        "every token is one you're paying for and one competing for the model's attention",
+        "models attend best to the start/end of a long context"
       ]
     }
   },
@@ -558,11 +611,20 @@
     ],
     "highlights": {
       "junior": [
-        "middleware in an ASP.NET Core pipeline"
+        "code that runs automatically at specific points in an agent's execution without the agent knowing",
+        "the agent itself never has to know the hook exists"
       ],
       "leadership": [
         "A hook is where policy becomes enforcement",
         "turning a written policy into something that's actually enforced in a running system"
+      ],
+      "senior": [
+        "analogous to middleware pipelines or AOP interceptors",
+        "let any hook short-circuit the chain by returning a 'blocked' result"
+      ],
+      "architect": [
+        "the same role a shared middleware framework plays in microservices",
+        "so a slow logging hook can never add latency to every agent action"
       ]
     }
   },
@@ -628,13 +690,19 @@
     ],
     "highlights": {
       "junior": [
-        "vague instructions produce vague results"
+        "vague instructions produce vague results",
+        "keep the instructions, examples, and the user's actual input in clearly separated sections"
       ],
       "senior": [
-        "a system prompt is a specification, few-shot examples are test fixtures"
+        "a system prompt is a specification, few-shot examples are test fixtures",
+        "constraints are ordered with the most important first and reiterated near the end"
       ],
       "leadership": [
         "A well-crafted prompt is often the cheapest performance win available"
+      ],
+      "architect": [
+        "system prompts function as executable business logic, needing the same governance as production configuration",
+        "re-run that suite whenever the underlying model version changes"
       ]
     }
   },
@@ -703,10 +771,15 @@
         "Perceive the situation, Plan the next action, Act, Observe what happened, then repeat until done"
       ],
       "senior": [
-        "a state machine with the LLM as transition function"
+        "a state machine with the LLM as transition function",
+        "enforce hard limits on iteration count and cost"
       ],
       "leadership": [
         "Every extra loop iteration is both a chance to get closer to the goal and a chance to drift further from it."
+      ],
+      "architect": [
+        "auto-escalates stuck loops to human review",
+        "capture a full step-by-step trace for every run, and auto-escalate loops that look stuck to a human queue"
       ]
     }
   },
@@ -765,6 +838,17 @@
         "Tokens are the units AI providers bill by",
         "Token cost scales with both input and output length",
         "has a direct, calculable cost in tokens worth modeling before launch"
+      ],
+      "junior": [
+        "the model never sees raw characters, only numeric IDs",
+        "1 token ≈ 4 characters of English",
+        "a word, a fragment, or punctuation"
+      ],
+      "senior": [
+        "A tokenizer (BPE or SentencePiece) maps input to integer IDs from a fixed vocabulary before inference"
+      ],
+      "architect": [
+        "cost scales linearly with tokens processed, latency with tokens generated, since decoding is sequential, one token at a time"
       ]
     }
   },
@@ -820,13 +904,19 @@
     ],
     "highlights": {
       "junior": [
-        "a compiler's lexer breaks source code into tokens"
+        "it just learns which character chunks appear together often",
+        "runs a fixed set of learned merge rules against your string"
       ],
       "senior": [
-        "the tokenizer is part of the model's contract"
+        "the tokenizer is part of the model's contract",
+        "iteratively merging frequent adjacent symbol pairs"
       ],
       "leadership": [
         "Never estimate cost or context capacity in words"
+      ],
+      "architect": [
+        "fixed at pretraining time and effectively irreversible",
+        "a migrated support workload found the new tokenizer produced 40% more tokens for code-heavy transcripts despite lower pricing"
       ]
     }
   },
@@ -882,11 +972,21 @@
     ],
     "highlights": {
       "architect": [
-        "degrade middle-of-context recall"
+        "degrade middle-of-context recall",
+        "every memory or retrieval technique exists to make the most of that ceiling, not remove it",
+        "tighter RAG produced better, cheaper answers"
       ],
       "leadership": [
         "the hard cap on how much information an AI model can consider at once",
         "Hitting the context window doesn't error loudly"
+      ],
+      "junior": [
+        "once full, you get an error or something must be dropped",
+        "why a chatbot can 'forget' earlier context",
+        "something has to be cut before the call can succeed"
+      ],
+      "senior": [
+        "attention over sequence length has real compute cost, so providers cap total tokens per call"
       ]
     }
   },
@@ -942,13 +1042,18 @@
     ],
     "highlights": {
       "junior": [
-        "converting a string into a hash key"
+        "converting a string into a hash key",
+        "'cheap' and 'inexpensive' map near each other, 'cheap' and 'giraffe' map far apart"
       ],
       "architect": [
-        "Version every embedding model change like a schema migration"
+        "Version every embedding model change like a schema migration",
+        "switching models isn't a config change; it's a full re-embedding migration"
       ],
       "leadership": [
         "The same embedding investment can power search, deduplication, and recommendations simultaneously"
+      ],
+      "senior": [
+        "compare with cosine similarity or dot product at query time rather than re-embedding on every request"
       ]
     }
   },
@@ -1004,13 +1109,17 @@
     ],
     "highlights": {
       "junior": [
-        "find rows closest in meaning to this one"
+        "instead of 'WHERE column = value' you pass in a vector and ask for the top-K nearest matches by similarity"
       ],
       "senior": [
-        "approximate nearest neighbor (ANN) search"
+        "approximate nearest neighbor (ANN) search",
+        "HNSW builds a graph for fast traversal; IVF clusters vectors and searches only relevant clusters"
       ],
       "leadership": [
         "Vector database choice is a multi-year infrastructure bet"
+      ],
+      "architect": [
+        "dedicated engines optimize for large-scale ANN performance, while pgvector trades some performance for operational simplicity"
       ]
     }
   },
@@ -1066,11 +1175,20 @@
     ],
     "highlights": {
       "senior": [
-        "the control condition in your prompt evaluation"
+        "the control condition in your prompt evaluation",
+        "performance comes entirely from pretrained generalization"
       ],
       "leadership": [
         "the fastest, cheapest way to prototype an AI feature",
         "Always try zero-shot first"
+      ],
+      "junior": [
+        "like a well-briefed developer following a clear ticket",
+        "no sample input/output pairs before it"
+      ],
+      "architect": [
+        "the cheapest point on the prompting cost/reliability curve",
+        "require a data-backed justification before adding few-shot or fine-tuning"
       ]
     }
   },
@@ -1126,11 +1244,17 @@
     ],
     "highlights": {
       "junior": [
-        "a single completed pull request as a template"
+        "some things are easier to show than explain, like a reference commit communicating a convention"
       ],
       "leadership": [
         "One well-chosen example often closes most of the accuracy gap",
         "diminishing returns set in fast"
+      ],
+      "senior": [
+        "one concrete example pins down formatting words describe poorly, at the cost of coverage"
+      ],
+      "architect": [
+        "an explicit, data-driven trigger for escalating to few-shot once observed edge-case variance outgrows what one example can represent"
       ]
     }
   },
@@ -1190,13 +1314,19 @@
     ],
     "highlights": {
       "junior": [
-        "show your work"
+        "show your work",
+        "intermediate steps catch errors a rushed answer misses",
+        "the model streams a reasoning trace, then a final answer"
       ],
       "architect": [
-        "an inference-time compute-for-accuracy trade"
+        "a routing layer classifies requests by estimated complexity, sending simple ones down a cheap direct-answer path and complex ones down a CoT path"
       ],
       "leadership": [
         "The accuracy gain from chain-of-thought is real but not free"
+      ],
+      "senior": [
+        "an effect demonstrated by Wei et al. (2022) that appears mainly in large models",
+        "roughly 3x output tokens"
       ]
     }
   },
@@ -1257,6 +1387,14 @@
       "leadership": [
         "A role prompt costs nothing extra to try",
         "a near-zero-cost lever worth trying"
+      ],
+      "junior": [
+        "which changes what they focus on",
+        "a system-prompt string like 'You are a senior security engineer' set once per session, before the user's actual question"
+      ],
+      "architect": [
+        "reshapes presentation, not underlying capability",
+        "conflating a confident, well-framed persona response with a factually reliable one"
       ]
     }
   },
@@ -1311,11 +1449,19 @@
     ],
     "highlights": {
       "junior": [
-        "you inherit whatever skew is baked in"
+        "you inherit whatever skew is baked in",
+        "models trained on internet-scale data reflect societal patterns, including historical inequities"
       ],
       "leadership": [
         "Bias testing needs to happen before launch, not after a complaint",
         "a legal, reputational, and ethical risk"
+      ],
+      "senior": [
+        "computes per-subgroup precision/recall/false-positive-rate on a fixed regression set and fails the build if any group's delta exceeds a threshold"
+      ],
+      "architect": [
+        "Every foundation-model product inherits a bias profile from a vendor model you can't fully audit",
+        "fund an internal red-team probing shipped features"
       ]
     }
   },
@@ -1370,13 +1516,18 @@
     ],
     "highlights": {
       "junior": [
-        "there's no single universal definition"
+        "there's no single universal definition",
+        "picking one is a deliberate design decision",
+        "a lender chooses equalized odds"
       ],
       "senior": [
-        "provably incompatible with each other under most real-world conditions"
+        "an impossibility result shows that when base rates differ across groups, you can't simultaneously satisfy calibration and equalized error rates"
       ],
       "leadership": [
         "Fairness is only actionable once it's defined as a specific, measurable metric"
+      ],
+      "architect": [
+        "the definition-selection decision is a governance record, and the evaluation pipeline is simply the enforcement mechanism for whatever was decided"
       ]
     }
   },
@@ -1431,13 +1582,18 @@
     ],
     "highlights": {
       "junior": [
-        "think out loud about what to do next, then take that action, then look at the result and think again"
+        "think out loud about what to do next, then take that action, then look at the result and think again",
+        "loses the error-correction benefit of thinking first"
       ],
       "architect": [
-        "the reference control-loop pattern nearly every production agent framework implements under the hood"
+        "the framework's job is orchestrating what goes into the ReAct loop's context each iteration, not replacing the loop itself"
       ],
       "leadership": [
         "ReAct's visible reasoning trail is what makes it auditable"
+      ],
+      "senior": [
+        "the model's action is always conditioned on an explicit, inspectable thought",
+        "cap iterations since reasoning alone doesn't guarantee forward progress"
       ]
     }
   },
@@ -1488,13 +1644,19 @@
     ],
     "highlights": {
       "junior": [
-        "sketching an outline before writing an essay"
+        "only asking the planner to reconsider if a step's result breaks the plan",
+        "a planner writes out the full sequence of steps needed"
       ],
       "architect": [
-        "trades ReAct's per-step reasoning cost for a cheaper amortized cost"
+        "a bet that pays off for repeatable workflows and fails for genuinely exploratory tasks",
+        "cost efficiency vs. staleness risk when the environment shifts mid-plan"
       ],
       "leadership": [
         "A reviewable upfront plan is a natural place to insert a human approval gate"
+      ],
+      "senior": [
+        "decouples the expensive planning reasoning from the (often much cheaper) per-step execution",
+        "unlike ReAct's reason-before-every-action overhead"
       ]
     }
   },
@@ -1545,13 +1707,19 @@
     ],
     "highlights": {
       "junior": [
-        "a sticky note reminding it not to repeat the same mistake"
+        "a sticky note reminding it not to repeat the same mistake",
+        "gives an agent a way to learn from a failed attempt without retraining"
       ],
       "senior": [
-        "a form of verbal reinforcement learning"
+        "a form of verbal reinforcement learning",
+        "without a reliable pass/fail signal, the reflection loop has nothing real to learn from"
       ],
       "leadership": [
         "Self-critique adds a full extra round of model calls"
+      ],
+      "architect": [
+        "the loop just accumulates plausible-sounding but unverified self-narratives",
+        "a Reflexion loop is only as trustworthy as the pass/fail signal it retries against"
       ]
     }
   },
@@ -1603,13 +1771,19 @@
     ],
     "highlights": {
       "junior": [
-        "trying a few different approaches to a bug before committing to one"
+        "can back up and try a different branch if the current one looks like a dead end",
+        "the model branches out into several possible next thoughts at each step"
       ],
       "architect": [
-        "search depth and breadth scale cost multiplicatively, not additively"
+        "search depth and breadth scale cost multiplicatively, not additively",
+        "production systems typically gate ToT behind a complexity classifier"
       ],
       "leadership": [
         "Exploring multiple reasoning branches multiplies token cost roughly by the branching factor"
+      ],
+      "senior": [
+        "the branching factor N directly controls cost -- higher N improves quality but multiplies inference calls",
+        "an evaluator function scores them"
       ]
     }
   },
@@ -1660,13 +1834,19 @@
     ],
     "highlights": {
       "junior": [
-        "asking three colleagues to independently estimate a project timeline"
+        "pick whichever final answer shows up most often across the attempts",
+        "a math-tutoring bot solves the same word problem 5 times"
       ],
       "senior": [
-        "cancels out reasoning errors occurring in some samples but not others"
+        "cancels out reasoning errors occurring in some samples but not others",
+        "wall-clock latency stays flat even though total token cost multiplies by N"
       ],
       "leadership": [
         "Running the same prompt several times and voting is one of the simplest reliability upgrades available"
+      ],
+      "architect": [
+        "N trades cost and latency for accuracy, with diminishing returns past a certain sample count",
+        "a thin ensembling layer any single-call reasoning pipeline can sit behind"
       ]
     }
   },
@@ -1717,11 +1897,20 @@
     ],
     "highlights": {
       "junior": [
-        "you never touch a server"
+        "you never touch a server",
+        "you sign up, get an API key, and start storing and searching embeddings through a simple API call"
       ],
       "leadership": [
         "speed to market matters more than infrastructure control or long-term cost optimization",
         "Managed hosting trades control and long-term cost for speed to market"
+      ],
+      "senior": [
+        "serverless and pod-based deployment options, metadata filtering, and namespaces for lightweight multi-tenancy"
+      ],
+      "architect": [
+        "a build-vs-buy decision on the vector-search layer",
+        "a dependency on Pinecone's own uptime and roadmap",
+        "coupling application code directly to Pinecone's SDK with no abstraction"
       ]
     }
   },
@@ -1772,11 +1961,19 @@
     ],
     "highlights": {
       "junior": [
-        "using SQLite for a quick prototype instead of standing up a full database server"
+        "using SQLite for a quick prototype instead of standing up a full database server",
+        "you can run it embedded directly inside your Python or JavaScript app with no separate server to set up"
       ],
       "leadership": [
         "the lowest-risk way to prove out a search feature before bigger spend",
         "validate an AI search feature before committing budget to a larger managed platform"
+      ],
+      "senior": [
+        "built-in support for common embedding functions so you can add raw text and let Chroma handle embedding generation"
+      ],
+      "architect": [
+        "its production scaling story is less battle-tested than long-established managed services",
+        "a strong default for early-stage products"
       ]
     }
   },
@@ -1827,11 +2024,19 @@
     ],
     "highlights": {
       "junior": [
-        "just the search algorithm as a code library, not a full database"
+        "just the search algorithm as a code library, not a full database",
+        "you have to write your own code to store the original data and hook it up to FAISS's index"
       ],
       "leadership": [
         "FAISS's low per-query cost only pays off once your team already has the infrastructure expertise to operate it well",
         "query volume is high enough that managed-service fees would otherwise dominate the budget"
+      ],
+      "senior": [
+        "product quantization for memory-efficient compressed vectors",
+        "you link into your own application process rather than call over a network API"
+      ],
+      "architect": [
+        "it gives maximum control over index algorithm, memory layout, and performance tuning, but provides none of the operational scaffolding"
       ]
     }
   },
@@ -1882,11 +2087,19 @@
     ],
     "highlights": {
       "junior": [
-        "a distributed database like Cassandra scales out horizontally"
+        "Milvus splits data storage from query processing, so you can scale the parts under load independently of storage"
       ],
       "leadership": [
         "Milvus's distributed architecture pays off at real scale",
         "avoids ongoing per-query vendor fees at scale"
+      ],
+      "senior": [
+        "supporting multiple ANN index types so you can tune the recall/speed/memory trade-off per collection",
+        "independently scalable components"
+      ],
+      "architect": [
+        "query load, ingestion rate, and index-build load can each spike independently",
+        "the operational complexity of a genuinely distributed system"
       ]
     }
   },
@@ -1937,13 +2150,18 @@
     ],
     "highlights": {
       "junior": [
-        "combines meaning-based vector search with traditional keyword filters in the same query"
+        "you don't have to run two separate search systems and merge the results yourself",
+        "combining vector similarity search with regular keyword search in one query"
       ],
       "senior": [
-        "blending vector similarity with BM25-style keyword scoring in a single ranked query"
+        "blending vector similarity with BM25-style keyword scoring in a single ranked query",
+        "a modular architecture for plugging in embedding or reranking providers"
       ],
       "leadership": [
         "Built-in hybrid search can replace a separate keyword-search system entirely"
+      ],
+      "architect": [
+        "it bakes that hybrid capability plus a typed schema directly into the database rather than treating them as things application code bolts on afterward"
       ]
     }
   }

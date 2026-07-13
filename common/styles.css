@@ -133,6 +133,10 @@ button {
    "documentation cover page" look rather than a dashboard app bar. */
 
 .page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
   max-width: var(--content-max-width);
   margin: 0 auto;
   padding: var(--space-3) var(--space-3) var(--space-2);
@@ -145,6 +149,13 @@ button {
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--color-heading);
+}
+
+.page-updated {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 .subtitle {
@@ -550,7 +561,8 @@ button {
   background: var(--deepdive-bg);
 }
 
-.modal-body p {
+.modal-body p,
+.topic-print-details p {
   margin: 0 0 var(--space-3) 0;
   text-align: justify;
   /* PM guide details use single newlines within a paragraph to lay out
@@ -560,21 +572,42 @@ button {
   white-space: pre-line;
 }
 
-.modal-body p:last-child {
+.modal-body p:last-child,
+.topic-print-details p:last-child {
   margin-bottom: 0;
 }
 
 /* Highlighter-style treatment for a topic's curated `highlights` phrases
-   (see applyHighlights() in app.js) -- scoped to the modal body only, so the
-   main topic list is untouched. Topics with no `highlights` field never
-   produce a <mark>, so this has no effect on guides that don't define it. */
-.modal-body mark {
+   (see applyHighlights() in app.js) -- scoped to the modal body and the
+   print-only details block, so the on-screen summary/keywords stay
+   untouched. Topics with no `highlights` field never produce a <mark>, so
+   this has no effect on guides that don't define it. */
+.modal-body mark,
+.topic-print-details mark {
   background: #fff59d;
   color: inherit;
   padding: 0.05em 0.15em;
   border-radius: 2px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+  /* Browsers omit background colors when printing unless told otherwise
+     (the "Background graphics" print option defaults off), which would
+     silently turn every highlight invisible on paper/PDF. Forces it on so
+     the highlight survives printing regardless of that setting. */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Additional Details is normally read via the modal (see .topic-links); this
+   duplicate copy exists purely so the print stylesheet can include full
+   details by default instead of just the summary -- see @media print. */
+.topic-print-details {
+  display: none;
+}
+
+.topic-print-details-heading {
+  font-size: 0.95rem;
+  margin: var(--space-3) 0 var(--space-2) 0;
 }
 
 body.modal-open {
@@ -771,10 +804,20 @@ body.modal-open {
 
   .topic-entry {
     padding: var(--space-3) 0;
-    break-inside: avoid;
   }
 
   .topic-entry + .topic-entry {
     border-top: 1px solid #999;
+  }
+
+  /* Additional Details is read via the on-screen modal normally (hence
+     display:none in the base stylesheet); printing includes it inline by
+     default instead of just the summary. */
+  .topic-print-details {
+    display: block;
+  }
+
+  .panel-images img {
+    max-width: 100%;
   }
 }
